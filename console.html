@@ -41,9 +41,9 @@
       function addListener () {
         setTimeout( function() {
           addListener();
-          if(document.getElementById("webgl-content") && lastGame && document.getElementById("webgl-content").contentWindow == lastGame)
+          if(document.getElementById("webgl-content") == null || (lastGame && document.getElementById("webgl-content") == lastGame))
             return;
-          lastGame = document.getElementById("webgl-content").contentWindow;
+          lastGame = document.getElementById("webgl-content");
           lastGame.addEventListener("keydown", function(e) {
                 console.log("Key: " + e.key + ", kCode: " + e.keyCode + ", code: " + e.code);
           });
