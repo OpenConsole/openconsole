@@ -218,5 +218,5 @@ GameControl.prototype.receiveMessage = function (event) {
 }
 
 
-
 var gCtrl = new GameControl();
+gCtrl.initialize();
