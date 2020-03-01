@@ -165,6 +165,7 @@ Games.prototype.loadDefaultGamesList = function() {
   if(gamesCtrl.gamesList) return;
   
   //gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json');
+  gamesCtrl.loadGamesList('https://openconsole.github.io/Games/gamesList.json');
   gamesCtrl.loadGamesList('https://openconsole-games.github.io/Games/gamesList.json');
   setTimeout(gamesCtrl.loadDefaultGamesList, 5000);
 }
