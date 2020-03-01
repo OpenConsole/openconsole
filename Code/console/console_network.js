@@ -184,12 +184,7 @@ Network.prototype.getMinimalId = function (initialMinId) {
 Network.prototype.handleMessage = function (conn, message) {
   switch (message.type) {
     case 'KeyPress':
-      var buttonData = gamesCtrl.translateKeyIdToButton(message.press.keyId, conn.id);
-      if(buttonData == null) {
-        console.log(message.press.keyId + " [IGNORED]");
-        return;
-      }
-      gCtrl.simulateButton(buttonData, message.press.upDown, message.press.pressId);
+      gamesCtrl.simulateButton(message.press.keyId, conn.id, message.press.upDown, message.press.pressId);
       break;
     case 'SetGame':
       console.log("Received: " + message.name);
