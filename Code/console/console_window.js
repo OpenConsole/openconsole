@@ -60,7 +60,8 @@ Games.prototype.waitForGameLoad = function (gameName) {
       }
     };
     window.addEventListener("message", onLoadUnity, false);
-    gamesCtrl.gamesIFrame.contentWindow.postMessage(gamesCtrl.corsProxy + gamesCtrl.currGame.loc, "*");//"https://openconsole.github.io");
+    var messageToSend = {"type":"SetUnityGame", "loc":gamesCtrl.corsProxy + gamesCtrl.currGame.loc };
+    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");//"https://openconsole.github.io");
   }
   else {
     gamesCtrl.onGameLoad();

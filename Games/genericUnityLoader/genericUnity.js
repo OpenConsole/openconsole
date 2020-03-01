@@ -6,8 +6,13 @@ var consolePageLocation = "https://openconsole.github.io";
         // Do we trust the sender of this message?
         if (event.origin !== consolePageLocation && strict)
             return;
-        
-        UnityLoader.instantiate("gameContainer", event.data, {onProgress: UnityProgress});
+
+        var message = event.data;
+        switch(message.type) {
+          case "SetUnityGame":
+            UnityLoader.instantiate("gameContainer", message.loc, {onProgress: UnityProgress});
+            break;
+        }
     }
     window.addEventListener("message", receiveMessage, false);
 })();

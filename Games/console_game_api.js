@@ -197,7 +197,7 @@ GameControl.prototype.simulateButton = function (buttonData, type, pressID) {
 
 GameControl.prototype.setGameInstance = function (giIdName) {
   gCtrl.gameInstance = document.getElementById(giIdName);
-  if (gamesCtrl.currGame.gameInstance) return;
+  if (gCtrl.currGame.gameInstance) return;
   setTimeout(function() { gCtrl.setGameInstance(giIdName); }, 1000);
   gCtrl.gameInstance = document.body;
 }
@@ -211,6 +211,7 @@ GameControl.prototype.receiveMessage = function (event) {
   switch(message.type) {
     case "SetGameInstace":
       gCtrl.setGameInstance(message.gameInstance);
+      break;
     case "SimulateBtn":
       gCtrl.simulateButton(message.buttonData, message.upDown, message.pressId);
       break;
