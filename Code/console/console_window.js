@@ -143,7 +143,7 @@ Games.prototype.setGame = function (gameName) {
   );
 }
 
-Games.prototype.onLoadGameList = function() {
+Games.prototype.onLoadDefaultGameList = function() {
   if(gamesCtrl.defaultGame && gamesCtrl.defaultGame != "")
     gamesCtrl.setGame(gamesCtrl.defaultGame);
 }
@@ -156,7 +156,6 @@ Games.prototype.loadGamesList = function (jsonLocation) {
         gamesCtrl.gamesList[data[i].name] = data[i];
         gamesCtrl.gamesList[data[i].name].path = relPath + data[i].relLocation;
       }
-      gamesCtrl.onLoadGameList();
     },
     function(xhr) { console.error(xhr); }
   );
@@ -167,6 +166,7 @@ Games.prototype.loadDefaultGamesList = function() {
   //gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json');
   gamesCtrl.loadGamesList('https://openconsole.github.io/Games/gamesList.json');
   gamesCtrl.loadGamesList('https://openconsole-games.github.io/Games/gamesList.json');
+  gamesCtrl.onLoadDefaultGameList();
   setTimeout(gamesCtrl.loadDefaultGamesList, 5000);
 }
 
