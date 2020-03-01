@@ -112,7 +112,7 @@ GameControl.prototype.simulateClickUp = function (x, y) {
  * Simulate click with relative x and y to canvas (ie 0.5, 0.5), z is unused
  */
 GameControl.prototype.relativeToAbsolute = function (x, y) {
-  var rect = document.getElementById("webgl-content").getBoundingClientRect();
+  var rect = gCtrl.gameInstance.getBoundingClientRect();
   var xPix = (rect.right - rect.left) * parseFloat(x);// + rect.left;
   var yPix = (rect.bottom - rect.top) * parseFloat(y);// + rect.top;
   return [xPix, yPix];
