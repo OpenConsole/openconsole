@@ -1,0 +1,16 @@
+{
+"companyName": "SoerbGames",
+"productName": "MyRustySubmarine",
+"productVersion": "0.1",
+"dataUrl": "https://cors-proxy-oc.glitch.me/https://v6p9d9t4.ssl.hwcdn.net/html/1972674/MyRustySubmarineWebGL/Build/MyRustySubmarineWebGL.data.unityweb",
+"wasmCodeUrl": "https://cors-proxy-oc.glitch.me/https://v6p9d9t4.ssl.hwcdn.net/html/1972674/MyRustySubmarineWebGL/Build/MyRustySubmarineWebGL.wasm.code.unityweb",
+"wasmFrameworkUrl": "https://cors-proxy-oc.glitch.me/https://v6p9d9t4.ssl.hwcdn.net/html/1972674/MyRustySubmarineWebGL/Build/MyRustySubmarineWebGL.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#00002B",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.3.0f6"
+}
