@@ -25,8 +25,7 @@ function GameLoad() {
   this.replaced = false;
   this.initialized = false;
   
-  this.canvasId = "#canvas";
-  this.setSize = null;
+  this.setSize = [];
 }
 
 GameLoad.prototype.initialize = function () {
@@ -43,26 +42,27 @@ GameLoad.prototype.initialize = function () {
   function(xhr) { console.error(xhr); });
 }
 GameLoad.prototype.iframeCanvasSize = function () {
-  var canvasElem = gLoad.gameIFrame.contentWindow.document.getElementById(gLoad.canvasId);
-  if (canvasElem == null) {
-    setTimeout(gLoad.iframeCanvasSize, 200);
+  var canvasElems = gLoad.gameIFrame.contentWindow.document.getElementsByTagName('canvas');
+  if (canvasElems.length == 0) {
+    setTimeout(gLoad.iframeCanvasSize, 1000);
     return;
   }
-  var canvasContainerElem = null;
-  if (gLoad.canvasContainerId)
-    canvasContainerElem = gLoad.gameIFrame.contentWindow.document.getElementById(gLoad.canvasContainerId);
-  var width = canvasElem.offsetWidth;
-  var height = canvasElem.offsetHeight;
-  if (height == 0) {
-    width = parseInt(canvasElem.style.width);
-    height = parseInt(canvasElem.style.height);
+  for (var i = 0; i < canvasElems.length; i++) {
+    var canvasElem = canvasElems[i];
+    var width = canvasElem.offsetWidth;
+    var height = canvasElem.offsetHeight;
+    if (height == 0) {
+      width = parseInt(canvasElem.style.width);
+      height = parseInt(canvasElem.style.height);
+    }
+    var mySetSize = gLoad.setIFrameCanvasSize.bind(null, canvasElem, gLoad.gameIFrame.contentWindow, width / height, i);
+    gLoad.setSize.push(mySetSize);
+    //gLoad.setSize();
+    gLoad.setupGameContainer(canvasElem, mySetSize);
+    gLoad.gameIFrame.contentWindow.addEventListener("resize", mySetSize);
   }
-  gLoad.setSize = gLoad.setIFrameCanvasSize.bind(null, canvasElem, gLoad.gameIFrame.contentWindow, width / height);
-  //gLoad.setSize();
-  gLoad.setupGameContainer(canvasElem);
-  gLoad.gameIFrame.contentWindow.addEventListener("resize", gLoad.setSize);
 }
-GameLoad.prototype.setupGameContainer = function (canvasElem) {
+GameLoad.prototype.setupGameContainer = function (canvasElem, mySetSize) {
   var gameCanvasContainter = canvasElem.parentElement;
   while (gameCanvasContainter.nodeName !== "HTML") {
     gameCanvasContainter.style.position = "absolute";
@@ -75,21 +75,26 @@ GameLoad.prototype.setupGameContainer = function (canvasElem) {
     gameCanvasContainter.style.transform = "none";
     gameCanvasContainter = gameCanvasContainter.parentElement;
   }
-  gLoad.setSize();
+  mySetSize();
 }
-GameLoad.prototype.setIFrameCanvasSize = function (canvasElem, maxWindow, ratio) {
+GameLoad.prototype.setIFrameCanvasSize = function (canvasElem, maxWindow, ratio, index) {
   var max_width = maxWindow.innerWidth;
   var max_height = maxWindow.innerHeight;
   var curr_ratio = max_width / max_height;
+  var canv_width = max_width;
+  var canv_height = max_height;
   if (curr_ratio > ratio) {
-    max_width = ratio * max_height;
+    canv_width = ratio * max_height;
   }
   else {
-    max_height = max_width / ratio;
+    canv_height = max_width / ratio;
   }
   //console.log("Setting: " + max_width + ", " + max_height);
-  canvasElem.style.minWidth = max_width + "px"; 
-  canvasElem.style.minHeight = max_height + "px"; 
+  canvasElem.style.minWidth = canv_width + "px"; 
+  canvasElem.style.minHeight = canv_height + "px"; 
+  canvasElem.style.maxWidth = canv_width + "px"; 
+  canvasElem.style.maxHeight = canv_height + "px"; 
+  canvasElem.style.transform = "translate(" + ((max_width - canv_width) / 2) + "px, " + ((max_height - canv_height) / 2) + "px)";
   //setTimeout(gLoad.setSize, 10);
 }
 GameLoad.prototype.iframeWrite = function (iframeContent) {
