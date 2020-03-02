@@ -96,14 +96,14 @@ GameLoad.prototype.iframeWrite = function (iframeContent) {
   //<iframe id="gameContainer" src="about:blank" class="page" scrolling="no" noresize="noresize" frameborder="0"></iframe>
   document.getElementById("game-content").innerHTML = "<iframe id=\"iframe-game-content\" src=\"about:blank\" class=\"page\" scrolling=\"no\" frameBorder=\"0\"></iframe>";
   gLoad.gameIFrame = document.getElementById("iframe-game-content");
+  gLoad.gameIFrame.contentWindow.document.open();
+  gLoad.gameIFrame.contentWindow.document.write(iframeContent);
+  gLoad.gameIFrame.contentWindow.document.close();
   gLoad.gameIFrame.addEventListener('load', function() {
     gLoad.iframeOverWrite(iframeContent);
   }, true);
 }
 GameLoad.prototype.iframeOverWrite = function (iframeContent) {
-  gLoad.gameIFrame.contentWindow.document.open();
-  gLoad.gameIFrame.contentWindow.document.write(iframeContent);
-  gLoad.gameIFrame.contentWindow.document.close();
   gLoad.iframeCanvasSize();
 }
 
@@ -157,7 +157,7 @@ GameLoad.prototype.replaceDataInInlineScripts = function (match) {
 }
 
 GameLoad.prototype.checkSourceReplace = function (source) {
-  return "((" + source + ").match(/^(https?:\\/\\/||blob:)/)?" + source + ":\"" + gLoad.corsProxy + gLoad.gameDir + "\"+" + source + ")";
+  return "((" + source + ").match(/^(https?:\\/\\/|blob:)/)?" + source + ":\"" + gLoad.corsProxy + gLoad.gameDir + "\"+" + source + ")";
 }
 GameLoad.prototype.replaceSrcsScript = function (srcMatch) {
   console.log(srcMatch);
@@ -175,6 +175,7 @@ GameLoad.prototype.replaceRequestScript = function (reqMatch) {
   return changed;
 }
 GameLoad.prototype.updateSourcesInScripts = function (script) {
+  //console.log(window.location.href);
   var updatedScript = script.replace(/\.src *= *[^,;]*/g, gLoad.replaceSrcsScript);
   return updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;)))[\s\S])*((?=\),(!1|!0))\))?/g, gLoad.replaceRequestScript);
 }
