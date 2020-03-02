@@ -230,7 +230,8 @@ GameLoad.prototype.replaceScripts = function (scriptMatch) {
 }
 
 GameLoad.prototype.replaceRefs = function (content) {
-  gLoad.iframeContent = gLoad.iframeContent.replace(/<script.*src="https?:\/\/static\.itch\.io\/htmlgame\.js"[^>]*><\/script>/, '');
+  //console.log(gLoad.iframeContent);
+  gLoad.iframeContent = gLoad.iframeContent.replace(/<script((?!src=)[\s\S])*src="https?:\/\/static\.itch\.io\/htmlgame\.js"[^>]*><\/script>/, '');
   gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*>((?!<\/script>)[\s\S])+<\/script>/g, gLoad.replaceDataInInlineScripts);
   gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*src="[^"]+"[^>]*> *<\/script>/g, gLoad.replaceScripts);
   gLoad.iframeContent = gLoad.iframeContent.replace(/src="(?!https?:\/\/|data:|blob:)[^"]+"/g, gLoad.replaceSrcs);
