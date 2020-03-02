@@ -187,8 +187,10 @@ GameLoad.prototype.checkSourceReplace = function (source) {
 }
 GameLoad.prototype.replaceSrcsScript = function (srcMatch) {
   console.log(srcMatch);
-  var firstPart = srcMatch.match(/\.src *= */)[0];
-  var changed = firstPart + gLoad.checkSourceReplace(srcMatch.substring(firstPart.length, srcMatch.length - 1)) + srcMatch.slice(-1);
+  var firstPart = srcMatch.match(/[,;{?]((?!\.src|[,;{?])[\s\S]){1,20}\.src *= */)[0];
+  var objectNameWithDelim = firstPart.match(/[,;{?]((?!\.src|[,;{?])[\s\S]){1,20}/)[0];
+  var objectName = objectNameWithDelim.substring(1);
+  var changed = objectNameWithDelim.charAt(0) + "(" + objectName + ".crossOrigin=\"Anonymous\"," + objectName + ".src=" + gLoad.checkSourceReplace(srcMatch.substring(firstPart.length, srcMatch.length - 1)) + ")" + srcMatch.slice(-1);
   console.log(changed);
   return changed;
 }
@@ -203,7 +205,8 @@ GameLoad.prototype.replaceRequestScript = function (reqMatch) {
 }
 GameLoad.prototype.updateSourcesInScripts = function (script) {
   //console.log(window.location.href);
-  var updatedScript = script.replace(/\.src *(?!==|=\n*"")= *((?!data:)[^,;:}])*[,;:}]/g, gLoad.replaceSrcsScript);
+  //var updatedScript = script.replace(/\.src *(?!==|=\n*"")= *((?!data:)[^,;:}])*[,;:}]/g, gLoad.replaceSrcsScript);
+  var updatedScript = script.replace(/[,;{?]((?!\.src|[,;{?])[\s\S]){1,20}\.src *(?!==|=\n*"")= *((?!data:)(:\/\/|:'|[^,:;}]))*[,:;}]/g, gLoad.replaceSrcsScript);
   return updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;)))[\s\S])*((?=\)+, *(!1|!0|false|true))\))?/g, gLoad.replaceRequestScript);
 }
 GameLoad.prototype.replaceScripts = function (scriptMatch) {
