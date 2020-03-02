@@ -15,7 +15,7 @@ function GameLoad() {
   this.gameIFrame = null;
   //this.gameLocation = "https://openconsole-games.github.io/Games/CrystalControl/index.html";
   this.gameLocation = getQueryVariable("loc");//"https://v6p9d9t4.ssl.hwcdn.net/html/844189/titonic web/index.html";
-  //this.gameLocation = "https://v6p9d9t4.ssl.hwcdn.net/html/1972674/MyRustySubmarineWebGL/index.html"
+  //this.gameLocation = "https://v6p9d9t4.ssl.hwcdn.net/html/989148/index.html"
   this.gameDir = this.gameLocation.substring(0, this.gameLocation.lastIndexOf("/") + 1);
   // this.corsProxy = "https://cors-anywhere.herokuapp.com/";
   this.corsProxy = "https://cors-proxy-oc.glitch.me/";
@@ -176,7 +176,7 @@ GameLoad.prototype.replaceRequestScript = function (reqMatch) {
 }
 GameLoad.prototype.updateSourcesInScripts = function (script) {
   var updatedScript = script.replace(/\.src *= *[^,;]*/g, gLoad.replaceSrcsScript);
-  return updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\);))[\s\S])*/g, gLoad.replaceRequestScript);
+  return updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;)))[\s\S])*((?=\),(!1|!0))\))?/g, gLoad.replaceRequestScript);
 }
 GameLoad.prototype.replaceScripts = function (scriptMatch) {
   var scriptSrc = scriptMatch.replace(/<script.*src="/, "").replace(/"><\/script>/, "");
