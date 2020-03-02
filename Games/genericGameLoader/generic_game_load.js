@@ -146,11 +146,15 @@ GameLoad.prototype.loadPage = function (path, success, error) {
 
 GameLoad.prototype.replaceSrcs = function (srcMatch) {
   console.log(srcMatch);
-  return "src=\"" + gLoad.gameDir + srcMatch.substring(5);
+  return "src=\"" + gLoad.corsProxy + gLoad.gameDir + srcMatch.substring(5);
 }
 GameLoad.prototype.replaceHrefs = function (hrefMatch) {
   console.log(hrefMatch);
-  return "href=\"" + gLoad.gameDir + hrefMatch.substring(6);
+  return "href=\"" + gLoad.corsProxy + gLoad.gameDir + hrefMatch.substring(6);
+}
+GameLoad.prototype.replaceManifests = function (manifestMatch) {
+  console.log(manifestMatch);
+  return "manifest=\"" + gLoad.corsProxy + gLoad.gameDir + manifestMatch.substring(10);
 }
 GameLoad.prototype.replaceUnityLoader = function (unityMatch) {
   console.log(unityMatch);
@@ -199,11 +203,11 @@ GameLoad.prototype.replaceRequestScript = function (reqMatch) {
 }
 GameLoad.prototype.updateSourcesInScripts = function (script) {
   //console.log(window.location.href);
-  var updatedScript = script.replace(/\.src *= *((?!data:)[^,;}])*[,;}]/g, gLoad.replaceSrcsScript);
-  return updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;)))[\s\S])*((?=\),(!1|!0))\))?/g, gLoad.replaceRequestScript);
+  var updatedScript = script.replace(/\.src *(?!==|=\n*"")= *((?!data:)[^,;:}])*[,;:}]/g, gLoad.replaceSrcsScript);
+  return updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;)))[\s\S])*((?=\)+, *(!1|!0|false|true))\))?/g, gLoad.replaceRequestScript);
 }
 GameLoad.prototype.replaceScripts = function (scriptMatch) {
-  var scriptSrc = scriptMatch.replace(/<script.*src="/, "").replace(/"><\/script>/, "");
+  var scriptSrc = scriptMatch.replace(/<script.*src="/, "").replace(/">((?!<\/script>)[\s\S])*<\/script>/, "");
   var myUniqueId = "[" + scriptSrc + Math.random() + "@WILL_FILL_IN]";
   gLoad.requiredBeforeLoading.push(myUniqueId);
   console.log("Added S: " + myUniqueId + ": " + gLoad.requiredBeforeLoading.length);
@@ -212,6 +216,7 @@ GameLoad.prototype.replaceScripts = function (scriptMatch) {
     function (script) {
       //console.log(script);
       var modifiedScript = gLoad.updateSourcesInScripts(script);
+      //modifiedScript = modifiedScript.replace("BBHtml5Game.prototype.PathToUrl=function( path ){", "BBHtml5Game.prototype.PathToUrl=function( path ){debugger;");
       var pageData = gLoad.iframeContent.split(myUniqueId);
       //if(modifiedScript.includes("sw.js")) console.log(modifiedScript);
       gLoad.iframeContent = pageData[0] + "<script>" + modifiedScript + "</script>" + pageData[1];
@@ -225,7 +230,17 @@ GameLoad.prototype.replaceScripts = function (scriptMatch) {
         gLoad.iframeWrite(gLoad.iframeContent);
       }
     },
-    function(xhr) { console.error(xhr); });
+    function(xhr) {
+      console.error(xhr);
+      var index = gLoad.requiredBeforeLoading.indexOf(myUniqueId);
+      if (index > -1) {
+        gLoad.requiredBeforeLoading.splice(index, 1);
+      }
+      console.log("Removed S: " + myUniqueId + ": " + gLoad.requiredBeforeLoading.length);
+      if (gLoad.requiredBeforeLoading.length == 0 && gLoad.replaced) {
+        gLoad.iframeWrite(gLoad.iframeContent);
+      }
+    });
   return myUniqueId;
 }
 
@@ -236,6 +251,7 @@ GameLoad.prototype.replaceRefs = function (content) {
   gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*src="[^"]+"[^>]*>((?!<\/script>)[\s\S])*<\/script>/g, gLoad.replaceScripts);
   gLoad.iframeContent = gLoad.iframeContent.replace(/src="(?!https?:\/\/|data:|blob:)[^"]+"/g, gLoad.replaceSrcs);
   gLoad.iframeContent = gLoad.iframeContent.replace(/href="(?!https?:\/\/)[^"]+"/g, gLoad.replaceHrefs);
+  gLoad.iframeContent = gLoad.iframeContent.replace(/manifest="(?!https?:\/\/)[^"]+"/g, gLoad.replaceManifests);
   //gLoad.iframeContent = gLoad.iframeContent.replace(/UnityLoader\.instantiate\(".+", ?".*"/g, gLoad.replaceUnityLoader);
 }
 
