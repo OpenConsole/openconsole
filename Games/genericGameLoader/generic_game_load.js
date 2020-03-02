@@ -213,8 +213,8 @@ GameLoad.prototype.replaceScripts = function (scriptMatch) {
       //console.log(script);
       var modifiedScript = gLoad.updateSourcesInScripts(script);
       var pageData = gLoad.iframeContent.split(myUniqueId);
+      //if(modifiedScript.includes("sw.js")) console.log(modifiedScript);
       gLoad.iframeContent = pageData[0] + "<script>" + modifiedScript + "</script>" + pageData[1];
-      //if(gLoad.iframeContent.includes(myUniqueId)) debugger;
       //console.log(gLoad.iframeContent);
       var index = gLoad.requiredBeforeLoading.indexOf(myUniqueId);
       if (index > -1) {
@@ -233,7 +233,7 @@ GameLoad.prototype.replaceRefs = function (content) {
   //console.log(gLoad.iframeContent);
   gLoad.iframeContent = gLoad.iframeContent.replace(/<script((?!src=)[\s\S])*src="https?:\/\/static\.itch\.io\/htmlgame\.js"[^>]*><\/script>/, '');
   gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*>((?!<\/script>)[\s\S])+<\/script>/g, gLoad.replaceDataInInlineScripts);
-  gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*src="[^"]+"[^>]*> *<\/script>/g, gLoad.replaceScripts);
+  gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*src="[^"]+"[^>]*>((?!<\/script>)[\s\S])*<\/script>/g, gLoad.replaceScripts);
   gLoad.iframeContent = gLoad.iframeContent.replace(/src="(?!https?:\/\/|data:|blob:)[^"]+"/g, gLoad.replaceSrcs);
   gLoad.iframeContent = gLoad.iframeContent.replace(/href="(?!https?:\/\/)[^"]+"/g, gLoad.replaceHrefs);
   //gLoad.iframeContent = gLoad.iframeContent.replace(/UnityLoader\.instantiate\(".+", ?".*"/g, gLoad.replaceUnityLoader);
