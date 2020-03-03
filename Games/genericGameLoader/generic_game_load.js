@@ -248,7 +248,7 @@ GameLoad.prototype.updateSourcesInScripts = function (script) {
   updatedScript = updatedScript.replace(/(navigator\.serviceWorker\.register *\( *)(((?!,|\))[\s\S])+)/g, gLoad.replaceSWScript);
   //updatedScript = updatedScript.replace(/if *\(e\.baseUrl\) *this/, "debugger;if (e.baseUrl) this");
   updatedScript = updatedScript.replace(/(new +URL *\(([^,]+),)([^)]+)/g, gLoad.replaceUrlInScript);
-  return "function chkSrc (source) {  console.log(\"SOURCE IS: \" + source); if (source == null || typeof source == \"object\" || source == \"\") return source;  if (source.match(/^(https?:\\/\\/|blob:|data:)/)) return source;  var tmp = \"" + gLoad.corsProxy + gLoad.gameDir + "\"+source; console.log(\"RETURNING: \"+tmp); return tmp; }" + updatedScript;
+  return "function chkSrc (source) { console.log(\"SOURCE IS: \" + source); if (source == null) return null; if(source.toString == null || source == \"\") return source; source = source.toString(); if (source.match(/^(https?:\\/\\/|blob:|data:|javascript:)/)) return source; var tmp = \"" + gLoad.corsProxy + gLoad.gameDir + "\"+source; console.log(\"RETURNING: \"+tmp); return tmp; }" + updatedScript;
 }
 GameLoad.prototype.replaceScripts = function (scriptMatch, g1, scriptSrc) {
   var myUniqueId = "[" + scriptSrc + Math.random() + "@WILL_FILL_IN]";
