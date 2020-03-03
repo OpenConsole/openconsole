@@ -63,6 +63,8 @@ GameLoad.prototype.iframeCanvasSize = function () {
   }
 }
 GameLoad.prototype.setupGameContainer = function (canvasElem, mySetSize) {
+  canvasElem.style.imageRendering = "optimizespeed";
+
   var gameCanvasContainter = canvasElem.parentElement;
   gameCanvasContainter.style.display = "flex";
   gameCanvasContainter.style.alignItems = "center";
@@ -161,15 +163,22 @@ GameLoad.prototype.replaceUnityLoader = function (unityMatch) {
   var firstPart = unityMatch.match(/UnityLoader\.instantiate\(".+", ?"/)[0];
   return firstPart + gLoad.corsProxy + gLoad.gameDir + unityMatch.substring(firstPart.length);
 }
-GameLoad.prototype.replaceDataInInlineScripts = function (match) {
-  var scriptData = match.replace(/^<script[^>]*>/, "").replace(/<\/script>$/, "");
+GameLoad.prototype.replaceUrls = function (urlMatch, prefix, g2, urlData) {
+  //console.log(urlMatch);
+  return prefix + gLoad.corsProxy + gLoad.gameDir + urlData;
+}
+GameLoad.prototype.replaceDataInInlineStyles = function (match, prefix, g2, style, g4, postfix) {
+  var newStyle = style.replace(/(url\(('|"))([^'"]+)/g, gLoad.replaceUrls);
+  return prefix + newStyle + postfix;
+}
+GameLoad.prototype.replaceDataInInlineScripts = function (match, prefix, g2, scriptData, g3, postfix) {
   var myUniqueId = "[" + Math.random() + "@WILL_FILL_IN]";
   gLoad.requiredBeforeLoading.push(myUniqueId);
   console.log("Added I: " + myUniqueId + ": " + gLoad.requiredBeforeLoading.length);
   setTimeout(function() {
     var modifiedScript = gLoad.updateSourcesInScripts(scriptData);
     var pageData = gLoad.iframeContent.split(myUniqueId);
-    gLoad.iframeContent = pageData[0] + "<script>" + modifiedScript + "</script>" + pageData[1];
+    gLoad.iframeContent = pageData[0] + prefix + modifiedScript + postfix + pageData[1];
     var index = gLoad.requiredBeforeLoading.indexOf(myUniqueId);
     if (index > -1) {
       gLoad.requiredBeforeLoading.splice(index, 1);
@@ -183,14 +192,40 @@ GameLoad.prototype.replaceDataInInlineScripts = function (match) {
 }
 
 GameLoad.prototype.checkSourceReplace = function (source) {
-  return "((" + source + ").match(/^(https?:\\/\\/|blob:)/)?" + source + ":\"" + gLoad.corsProxy + gLoad.gameDir + "\"+" + source + ")";
+  return "(chkSrc(" + source + "))";
 }
-GameLoad.prototype.replaceSrcsScript = function (srcMatch) {
+GameLoad.prototype.replaceSrcsScript = function (srcMatch, prefix, name, g3, assignment, g5, g6, ending) {
   console.log(srcMatch);
-  var firstPart = srcMatch.match(/[,;{?]((?!\.src|[,;{?])[\s\S]){1,20}\.src *= */)[0];
-  var objectNameWithDelim = firstPart.match(/[,;{?]((?!\.src|[,;{?])[\s\S]){1,20}/)[0];
-  var objectName = objectNameWithDelim.substring(1);
-  var changed = objectNameWithDelim.charAt(0) + "(" + objectName + ".crossOrigin=\"Anonymous\"," + objectName + ".src=" + gLoad.checkSourceReplace(srcMatch.substring(firstPart.length, srcMatch.length - 1)) + ")" + srcMatch.slice(-1);
+  var changed = prefix + "(" + name + ".crossOrigin=\"Anonymous\"," + name + ".src=" + gLoad.checkSourceReplace(assignment) + ")" + ending;
+  console.log(changed);
+  return changed;
+}
+GameLoad.prototype.replaceFetchScript = function (fetchMatch, fetchPrefix, fetchName) {
+  console.log(fetchMatch);
+  console.log(fetchName);
+  var changed = fetchPrefix + gLoad.checkSourceReplace(fetchName);
+  console.log(changed);
+  return changed;
+}
+GameLoad.prototype.replaceUriScript = function (uriMatch, uriPrefix, g2, uriName, g4, g5, uriPostfix) {
+  console.log(uriMatch);
+  console.log(uriName);
+  var changed = uriPrefix + gLoad.checkSourceReplace(uriName) + uriPostfix;
+  console.log(changed);
+  return changed;
+}
+GameLoad.prototype.replaceSWScript = function (swMatch, swPrefix, swName) {
+  console.log(swMatch);
+  console.log(swName);
+  var changed = swPrefix + gLoad.checkSourceReplace(swName);
+  console.log(changed);
+  return changed;
+}
+GameLoad.prototype.replaceUrlInScript = function (urlMatch, urlPrefix, urlDestMatch) {
+  console.log(urlMatch);
+  console.log(urlPrefix);
+  console.log(urlDestMatch);
+  var changed = urlPrefix + "\"" + gLoad.corsProxy + gLoad.gameDir + "\"+((" + urlDestMatch + ").includes(\"worker\")?\"scripts/\":\"\")";
   console.log(changed);
   return changed;
 }
@@ -206,18 +241,22 @@ GameLoad.prototype.replaceRequestScript = function (reqMatch) {
 GameLoad.prototype.updateSourcesInScripts = function (script) {
   //console.log(window.location.href);
   //var updatedScript = script.replace(/\.src *(?!==|=\n*"")= *((?!data:)[^,;:}])*[,;:}]/g, gLoad.replaceSrcsScript);
-  var updatedScript = script.replace(/[,;{?]((?!\.src|[,;{?])[\s\S]){1,20}\.src *(?!==|=\n*"")= *((?!data:)(:\/\/|:'|[^,:;}]))*[,:;}]/g, gLoad.replaceSrcsScript);
-  return updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;)))[\s\S])*((?=\)+, *(!1|!0|false|true))\))?/g, gLoad.replaceRequestScript);
+  var updatedScript = script.replace(/([,;{?(]|return )(((?!\.src|[,;{?(]|return)[\s\S]){1,20})\.src *(?!==|=\n*"")= *(((?!data:|null|\)\);)(:\/\/|:'|,[a-zA-Z.]\)|[^,:;}]))*)([,:;})])/g, gLoad.replaceSrcsScript);
+  updatedScript = updatedScript.replace(/(fetch *\( *)(((?!(,|\)(,|;|}|\))))[\s\S])*)/g, gLoad.replaceFetchScript);
+  updatedScript = updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;|})))[\s\S])*((?=\)+, *(!1|!0|false|true))\))?/g, gLoad.replaceRequestScript);
+  updatedScript = updatedScript.replace(/(\.(uri|URL) *(?!==)= *)(((?!data:|null|\)\);)(:\/\/|:'|[^,:;})]))*)([,:;})])/g, gLoad.replaceUriScript);
+  updatedScript = updatedScript.replace(/(navigator\.serviceWorker\.register *\( *)(((?!,|\))[\s\S])+)/g, gLoad.replaceSWScript);
+  //updatedScript = updatedScript.replace(/if *\(e\.baseUrl\) *this/, "debugger;if (e.baseUrl) this");
+  updatedScript = updatedScript.replace(/(new +URL *\(([^,]+),)([^)]+)/g, gLoad.replaceUrlInScript);
+  return "function chkSrc (source) {  console.log(\"SOURCE IS: \" + source); if (source == null || typeof source == \"object\" || source == \"\") return source;  if (source.match(/^(https?:\\/\\/|blob:|data:)/)) return source;  var tmp = \"" + gLoad.corsProxy + gLoad.gameDir + "\"+source; debugger; console.log(\"RETURNING: \"+tmp); return tmp; }" + updatedScript;
 }
-GameLoad.prototype.replaceScripts = function (scriptMatch) {
-  var scriptSrc = scriptMatch.replace(/<script.*src="/, "").replace(/">((?!<\/script>)[\s\S])*<\/script>/, "");
+GameLoad.prototype.replaceScripts = function (scriptMatch, g1, scriptSrc) {
   var myUniqueId = "[" + scriptSrc + Math.random() + "@WILL_FILL_IN]";
   gLoad.requiredBeforeLoading.push(myUniqueId);
   console.log("Added S: " + myUniqueId + ": " + gLoad.requiredBeforeLoading.length);
-  console.log(scriptMatch);
   gLoad.loadPage(gLoad.corsProxy + gLoad.gameDir + scriptSrc,
     function (script) {
-      //console.log(script);
+      console.log(script);
       var modifiedScript = gLoad.updateSourcesInScripts(script);
       //modifiedScript = modifiedScript.replace("BBHtml5Game.prototype.PathToUrl=function( path ){", "BBHtml5Game.prototype.PathToUrl=function( path ){debugger;");
       var pageData = gLoad.iframeContent.split(myUniqueId);
@@ -250,8 +289,9 @@ GameLoad.prototype.replaceScripts = function (scriptMatch) {
 GameLoad.prototype.replaceRefs = function (content) {
   //console.log(gLoad.iframeContent);
   gLoad.iframeContent = gLoad.iframeContent.replace(/<script((?!src=|>)[\s\S])*src="https?:\/\/static\.itch\.io\/htmlgame\.js"[^>]*><\/script>/, '');
-  gLoad.iframeContent = gLoad.iframeContent.replace(/<script((?!>|src=)[\s\S])*>((?!<\/script>)[\s\S])+<\/script>/g, gLoad.replaceDataInInlineScripts);
-  gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*src="[^"]+"[^>]*>((?!<\/script>)[\s\S])*<\/script>/g, gLoad.replaceScripts);
+  gLoad.iframeContent = gLoad.iframeContent.replace(/(<script((?!>|src=)[\s\S])*>)(((?!<\/script>)[\s\S])+)(<\/script>)/g, gLoad.replaceDataInInlineScripts);
+  gLoad.iframeContent = gLoad.iframeContent.replace(/<script[^>]*src=('|")([^'"]+)('|")[^>]*>((?!<\/script>)[\s\S])*<\/script>/g, gLoad.replaceScripts);
+  gLoad.iframeContent = gLoad.iframeContent.replace(/(<style((?!>|src=)[\s\S])*>)(((?!<\/style>)[\s\S])+)(<\/style>)/g, gLoad.replaceDataInInlineStyles);
   gLoad.iframeContent = gLoad.iframeContent.replace(/src="(?!https?:\/\/|data:|blob:)[^"]+"/g, gLoad.replaceSrcs);
   gLoad.iframeContent = gLoad.iframeContent.replace(/href="(?!https?:\/\/)[^"]+"/g, gLoad.replaceHrefs);
   gLoad.iframeContent = gLoad.iframeContent.replace(/manifest="(?!https?:\/\/)[^"]+"/g, gLoad.replaceManifests);
