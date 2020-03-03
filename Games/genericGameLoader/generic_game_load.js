@@ -241,14 +241,14 @@ GameLoad.prototype.replaceRequestScript = function (reqMatch) {
 GameLoad.prototype.updateSourcesInScripts = function (script) {
   //console.log(window.location.href);
   //var updatedScript = script.replace(/\.src *(?!==|=\n*"")= *((?!data:)[^,;:}])*[,;:}]/g, gLoad.replaceSrcsScript);
-  var updatedScript = script.replace(/([,;{?(]|return )(((?!\.src|[,;{?(]|return)[\s\S]){1,20})\.src *(?!==|=\n*"")= *(((?!data:|null|\)\);)(:\/\/|:'|,[a-zA-Z.]\)|[^,:;}]))*)([,:;})])/g, gLoad.replaceSrcsScript);
+  var updatedScript = script.replace(/([,;{?(]|return )(((?!\.src|[,;{?(]|return)[\s\S]){1,20})\.src *(?!==|=\n*"")= *(((?!data:|\)\);)(:\/\/|:'|\([^)]{1,11}|\(\)|,[ a-zA-Z.]\)|[^,:;}]))*)([,:;})])/g, gLoad.replaceSrcsScript);
   updatedScript = updatedScript.replace(/(fetch *\( *)(((?!(,|\)(,|;|}|\))))[\s\S])*)/g, gLoad.replaceFetchScript);
   updatedScript = updatedScript.replace(/\.open *\( *('|")[^'"]*('|") *,((?!(,|\)(,|;|})))[\s\S])*((?=\)+, *(!1|!0|false|true))\))?/g, gLoad.replaceRequestScript);
   updatedScript = updatedScript.replace(/(\.(uri|URL) *(?!==)= *)(((?!data:|null|\)\);)(:\/\/|:'|[^,:;})]))*)([,:;})])/g, gLoad.replaceUriScript);
   updatedScript = updatedScript.replace(/(navigator\.serviceWorker\.register *\( *)(((?!,|\))[\s\S])+)/g, gLoad.replaceSWScript);
   //updatedScript = updatedScript.replace(/if *\(e\.baseUrl\) *this/, "debugger;if (e.baseUrl) this");
   updatedScript = updatedScript.replace(/(new +URL *\(([^,]+),)([^)]+)/g, gLoad.replaceUrlInScript);
-  return "function chkSrc (source) {  console.log(\"SOURCE IS: \" + source); if (source == null || typeof source == \"object\" || source == \"\") return source;  if (source.match(/^(https?:\\/\\/|blob:|data:)/)) return source;  var tmp = \"" + gLoad.corsProxy + gLoad.gameDir + "\"+source; debugger; console.log(\"RETURNING: \"+tmp); return tmp; }" + updatedScript;
+  return "function chkSrc (source) {  console.log(\"SOURCE IS: \" + source); if (source == null || typeof source == \"object\" || source == \"\") return source;  if (source.match(/^(https?:\\/\\/|blob:|data:)/)) return source;  var tmp = \"" + gLoad.corsProxy + gLoad.gameDir + "\"+source; console.log(\"RETURNING: \"+tmp); return tmp; }" + updatedScript;
 }
 GameLoad.prototype.replaceScripts = function (scriptMatch, g1, scriptSrc) {
   var myUniqueId = "[" + scriptSrc + Math.random() + "@WILL_FILL_IN]";
