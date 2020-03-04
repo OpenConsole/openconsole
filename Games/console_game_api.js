@@ -227,3 +227,17 @@ GameControl.prototype.receiveMessage = function (event) {
 
 var gCtrl = new GameControl();
 gCtrl.initialize();
+
+
+(function () {
+  // Debug
+  document.body.addEventListener("keydown", function(e) {
+    console.log("Key: " + e.key + ", kCode: " + e.keyCode + ", code: " + e.code);
+  });
+  document.body.addEventListener("mousedown", function(e) {
+    var rect = gCtrl.gameInstance.getBoundingClientRect();
+    var xPix = (e.clientX) / (rect.right - rect.left);
+    var yPix = (e.clientY) / (rect.bottom - rect.top);
+    console.log("X: " + xPix + ", Y: " + yPix);
+  });
+})();

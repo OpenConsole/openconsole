@@ -35,26 +35,4 @@
     <script src="Code/console/console.js"></script>
     <script src="Code/console/console_window.js"></script>
     <script src="Code/console/console_network.js"></script>
-    
-    <script>
-      var lastGame = null;
-      function addListener () {
-        setTimeout( function() {
-          addListener();
-          if(document.getElementById("webgl-content") == null || (lastGame && document.getElementById("webgl-content") == lastGame))
-            return;
-          lastGame = document.getElementById("webgl-content");
-          lastGame.addEventListener("keydown", function(e) {
-                console.log("Key: " + e.key + ", kCode: " + e.keyCode + ", code: " + e.code);
-          });
-          lastGame.addEventListener("mousedown", function(e) {
-                var rect = document.getElementById("webgl-content").getBoundingClientRect();
-                var xPix = (e.clientX) / (rect.right - rect.left);
-                var yPix = (e.clientY) / (rect.bottom - rect.top);
-                console.log("X: " + xPix + ", Y: " + yPix);
-          });
-        }, 2000);
-      }
-      addListener();
-    </script>
   </body>
