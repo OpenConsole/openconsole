@@ -270,7 +270,7 @@ Games.prototype.simulateButton = function (keyId, playerId, upDown, pressId) {
   // Used EXTERNALLY
   var translatedButton = gamesCtrl.translateKeyIdToButton(keyId, playerId);
   if(translatedButton == null) {
-    console.log(message.press.keyId + " [IGNORED]");
+    console.log(keyId + ", " + playerId + " [IGNORED]");
     return;
   }
   gamesCtrl.sendSimulateButton(translatedButton, upDown, pressId);
