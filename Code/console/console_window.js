@@ -133,13 +133,7 @@ Games.prototype.getGamePath = function (gameSettings, currLocation) {
     gameLoc = currLocation.substring(0, currLocation.lastIndexOf("/") + 1) + gameSettings.relLoc;
   } 
   else if (gameSettings.absLoc != null) {
-    if (gameSettings.type == "cached" || gameSettings.type == "unity") {
-      // Since game is remote we must use a cors proxy to load it
-      gameLoc = gamesCtrl.corsProxy + gameSettings.absLoc;
-    } else {
-      // The remote game loader deals with cors proxy
-      gameLoc = gameSettings.absLoc;
-    }
+    gameLoc = gameSettings.absLoc;
   }
   return gameLoc;
 }
