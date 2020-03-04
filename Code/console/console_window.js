@@ -148,11 +148,12 @@ Games.prototype.setGame = function (gameName) {
     console.error("Unknown game! " + gameName);
     return;
   }
-  var gameSettingsLocation = gamesCtrl.gamesList[gameName].path;
-  gamesCtrl.loadJSON(gamesCtrl.corsProxy + gameSettingsLocation,
+  var gameConfigLoc = gamesCtrl.gamesList[gameName].path;
+  var configLoadLoc = gamesCtrl.gamesList[gameName].skipCorsProxy ? gameConfigLoc : gamesCtrl.corsProxy + gameConfigLoc;
+  gamesCtrl.loadJSON(configLoadLoc
     function(settings) { 
       console.log(settings);
-      var path = gamesCtrl.getGamePath(settings.game, gameSettingsLocation);
+      var path = gamesCtrl.getGamePath(settings.game, gameConfigLoc);
       if(path == null) {
         console.error("Path to game not specified!");
         return;
@@ -182,6 +183,7 @@ Games.prototype.loadGamesList = function (jsonLocation, skipCorsProxy) {
         if(gamesCtrl.gamesList == null) gamesCtrl.gamesList = {};
         gamesCtrl.gamesList[data[i].name] = data[i];
         gamesCtrl.gamesList[data[i].name].path = relPath + data[i].relLocation;
+        gamesCtrl.gamesList[data[i].name].skipCorsProxy = skipCorsProxy;
       }
       gamesCtrl.onLoadDefaultGameList();
     },
