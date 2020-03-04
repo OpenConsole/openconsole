@@ -68,6 +68,7 @@ GameControl.prototype.simulate = function (element, eventName, options) {
                                                code: allOptions.code, key : allOptions.key, keyCode: allOptions.keyCode, which:allOptions.keyCode });
         break;
     }
+    oEvent.currentTarget = document.body;
     gCtrl.simulateEvent(element, oEvent);
   }
   else {
@@ -108,7 +109,7 @@ GameControl.prototype.simulateClickDown = function (x, y) {
   gCtrl.simulate(gCtrl.gameInstance, "mousemove", { pointerX: x, pointerY: y });
   setTimeout(function() {
     gCtrl.simulate(gCtrl.gameInstance, "mousedown", { pointerX: x, pointerY: y });
-  }, 30);
+  }, 50);
 }
 GameControl.prototype.simulateClickUp = function (x, y) {
   if(gCtrl.gameInstance == null) return;
