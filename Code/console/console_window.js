@@ -109,7 +109,7 @@ Games.prototype.setGameFrame = function (gameObj) {
     case "cached":
       // !! Game HTML must be edited to contain: <script src="https://openconsole.github.io/Games/console_game_api.js"></script>
       gamesCtrl.gamesIFrame.src = gameObj.loc;
-      gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.unityFrameLoaded );
+      gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.cachedFrameLoaded );
       break;
     case "remote":
       // Game is on Remote server, try to load game from there. Won't work with all games.
