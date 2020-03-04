@@ -64,12 +64,11 @@ MetaConsole.prototype.displayPlayers = function (conns) {
 }
 
 MetaConsole.prototype.updateGameSize = function() {
-  if (gamesCtrl.currGame == null) return;
   var gameContainer = gamesCtrl.getGameIFrame();
   if (gameContainer == null) return;
 
   var myWidth = window.innerWidth, myHeight = window.innerHeight - 60;
-  var aspectRatio = gamesCtrl.currGame.settings.aspect;
+  var aspectRatio = gamesCtrl.getCurrGameAspect();
   if(aspectRatio && aspectRatio != 0) {
     var deltaAspect = (myWidth/myHeight) / parseFloat(aspectRatio);
     if(deltaAspect > 1) {

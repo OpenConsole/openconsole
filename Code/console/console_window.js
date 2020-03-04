@@ -9,6 +9,8 @@ function Games() {
   this.defaultGame = "_ChooseGame"; // MazeGame ~ #HardCrash
   // this.corsProxy = "https://cors-anywhere.herokuapp.com/";
   this.corsProxy = "https://cors-proxy-oc.glitch.me/";
+  this.unityLoaderLoc = "https://openconsole-games.github.io/Games/_GenericUnityLoader/index.html";
+  this.genericLoaderLoc = "https://openconsole-games.github.io/Games/_GenericGameLoader/index.html";
   this.currGame = null;
   this.gamesList = null;
   this.gamesIFrame = null;
@@ -38,36 +40,8 @@ Games.prototype.loadJSON = function (path, success, error) {
  * If generic: Loads a Generic .html game located at game.loc, INPUT ONLY WORKS IF SAME ORIGIN!
  * Else: Loads a Unity game with the unity .json at game.loc
  */
-Games.prototype.setGameContentFrame = function (gameName) {
-  if (!gamesCtrl.currGame || gamesCtrl.currGame.name != gameName) return;
-
-  var messageToSend = {"type":"SetGameInstace", "gameInstance":gamesCtrl.currGame.settings.canvasID };
-  if(gamesCtrl.gamesIFrame) {
-    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
-  }
-}
-Games.prototype.waitForGameLoad = function (gameName) {
-  if (!gamesCtrl.currGame || gamesCtrl.currGame.name != gameName) return;
-  gamesCtrl.setGameContentFrame(gameName);
-  gamesCtrl.gamesIFrame.removeEventListener("load", gamesCtrl.waitForGameLoad);
-  
-  if(gamesCtrl.currGame.settings.loadUnityGame) {
-    var onLoadUnity = function (event) {
-      if(event.data == "loaded") {
-          if (gamesCtrl.currGame && gamesCtrl.currGame.name == gameName)
-            gamesCtrl.onGameLoad();
-          window.removeEventListener("message", onLoadUnity, false);
-      }
-    };
-    window.addEventListener("message", onLoadUnity, false);
-    var messageToSend = {"type":"SetUnityGame", "loc":gamesCtrl.corsProxy + gamesCtrl.currGame.loc };
-    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");//"https://openconsole.github.io");
-  }
-  else {
-    gamesCtrl.onGameLoad();
-  }
-}
 Games.prototype.onGameLoad = function () {
+  // Currently OBSOLETE
   if (!gamesCtrl.currGame) return;
   if(gamesCtrl.currGame.name == gamesCtrl.defaultGame) {
     var gamesArray = Object.values(gamesCtrl.gamesList).filter(game => { return game.name[0] != "_" });
@@ -87,7 +61,7 @@ Games.prototype.onGameLoad = function () {
         setTimeout(function() { startKeySeq(index+1); }, ogl.keys[index].data);
       } 
       else {
-        gCtrl.simulateButton(ogl.keys[index], "Press");
+        gamesCtrl.sendSimulateButton(ogl.keys[index], "Press", "0");
         setTimeout(function() { startKeySeq(index+1); }, 300);
       }
     }
@@ -95,26 +69,79 @@ Games.prototype.onGameLoad = function () {
   setTimeout(function () { startKeySeq(0); }, delay);                
 }
 
-Games.prototype.setGameFrame = function (game) {
+
+Games.prototype.setGameContentFrame = function (gameCanvasId) {
+  if(gamesCtrl.gamesIFrame == null) return;
+  var messageToSend = {"type":"SetGameInstace", "gameCanvasId":gameCanvasId };
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
+}
+
+Games.prototype.cachedFrameLoaded = function () {
+  gamesCtrl.setGameContentFrame(gamesCtrl.currGame.settings.canvas.id);
+  gamesCtrl.onGameLoad();
+}
+Games.prototype.remoteFrameLoaded = function () {
+  var messageToSend = {"type":"SetGame", "loc": gamesCtrl.currGame.loc, "canvasId":gamesCtrl.currGame.settings.canvas.id };
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");//"https://openconsole-games.github.io");
+  gamesCtrl.onGameLoad();
+}
+Games.prototype.unityFrameLoaded = function () {
+  gamesCtrl.setGameContentFrame("#canvas");
+  
+  var onLoadUnity = function (message) {
+    if(message.data.type == "UnityLoaded") {
+      gamesCtrl.onGameLoad();
+      window.removeEventListener("message", onLoadUnity);
+    }
+  };
+  window.addEventListener("message", onLoadUnity, false);
+  
+  var messageToSend = {"type":"SetUnityGame", "loc": gamesCtrl.currGame.loc, "corsProxy":gamesCtrl.corsProxy };
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");//"https://openconsole-games.github.io");
+}
+
+Games.prototype.setGameFrame = function (gameObj) {
+  gamesCtrl.currGame = gameObj;
   document.getElementById("game").innerHTML = "<iframe id=\"webgl-content\" src=\"\" scrolling=\"no\" frameBorder=\"0\"></iframe>";
   gamesCtrl.gamesIFrame = document.getElementById("webgl-content");
-
-  gamesCtrl.currGame = game;
-  gamesCtrl.gamesIFrame.addEventListener("load", function() { gamesCtrl.waitForGameLoad(game.name); } );
-  if(game.settings.loadUnityGame)
-    gamesCtrl.gamesIFrame.src = "Games/genericUnityLoader/genericUnity.html";
-  else
-    gamesCtrl.gamesIFrame.src = gamesCtrl.currGame.loc;
+  
+  switch (gameObj.settings.game.type) {
+    case "cached":
+      // !! Game HTML must be edited to contain: <script src="https://openconsole.github.io/Games/console_game_api.js"></script>
+      gamesCtrl.gamesIFrame.src = gameObj.loc;
+      gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.unityFrameLoaded );
+      break;
+    case "remote":
+      // Game is on Remote server, try to load game from there. Won't work with all games.
+      gamesCtrl.gamesIFrame.src = gamesCtrl.genericLoaderLoc;
+      gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.remoteFrameLoaded );
+      break;
+    case "unity":
+      // Unity files may be on Remote server, game can be loaded from there.
+      gamesCtrl.gamesIFrame.src = gamesCtrl.unityLoaderLoc;
+      gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.unityFrameLoaded );
+      break;
+  }
 }
 
 Games.prototype.getGamePath = function (gameSettings, currLocation) {
-  if (gameSettings.relLocation) {
-    return currLocation.substring(0, currLocation.lastIndexOf("/") + 1) + gameSettings.relLocation;
+  var gameLoc = null;
+  if (gameSettings.relLoc != null) {
+    if (gameSettings.type == "remote") {
+      console.error("Please use game.type of \"cached\" for games stored on a server you own (relLoc), \"remote\" games are much less efficient!");
+    }
+    gameLoc = currLocation.substring(0, currLocation.lastIndexOf("/") + 1) + gameSettings.relLoc;
   } 
-  else if (gameSettings.absLocation) {
-    return gameSettings.absLocation;
+  else if (gameSettings.absLoc != null) {
+    if (gameSettings.type == "cached" || gameSettings.type == "unity") {
+      // Since game is remote we must use a cors proxy to load it
+      gameLoc = gamesCtrl.corsProxy + gameSettings.absLoc;
+    } else {
+      // The remote game loader deals with cors proxy
+      gameLoc = gameSettings.absLoc;
+    }
   }
-  return null;
+  return gameLoc;
 }
 Games.prototype.setGame = function (gameName) {
   // Used EXTERNALLY
@@ -125,17 +152,14 @@ Games.prototype.setGame = function (gameName) {
   }
   var gameSettingsLocation = gamesCtrl.gamesList[gameName].path;
   gamesCtrl.loadJSON(gamesCtrl.corsProxy + gameSettingsLocation,
-    function(data) { 
-      console.log(data);
-      // Use CORS proxy
-      var path = gamesCtrl.getGamePath(data, gameSettingsLocation);
+    function(settings) { 
+      console.log(settings);
+      var path = gamesCtrl.getGamePath(settings.game, gameSettingsLocation);
       if(path == null) {
         console.error("Path to game not specified!");
         return;
       }
-      if(data.loadUnityGame) data.canvasID = "#canvas";
-      var game = new CurrGame(gameName, data, path);
-      
+      var game = new CurrGame(gameName, settings, path);
       gamesCtrl.setGameFrame(game);
       consoleNet.resetPlayerIds();
       consoleNet.setContollerGameAll();
@@ -190,6 +214,11 @@ Games.prototype.getGameInstance = function() {
   if (!gamesCtrl.currGame) return null;
   return gamesCtrl.currGame.gameInstance;
 }
+Games.prototype.getCurrGameAspect = function() {
+  // Used EXTERNALLY
+  if (!gamesCtrl.currGame) return null;
+  return gamesCtrl.currGame.settings.canvas.aspect;
+}
 Games.prototype.getGameIFrame = function() {
   // Used EXTERNALLY
   return gamesCtrl.gamesIFrame;
@@ -197,13 +226,13 @@ Games.prototype.getGameIFrame = function() {
 Games.prototype.getMaxPlayers = function() {
   // Used EXTERNALLY
   if (!gamesCtrl.currGame) return null;
-  return gamesCtrl.currGame.settings.maxPlayers;
+  return gamesCtrl.currGame.settings.controls.maxPlayers;
 }
 Games.prototype.getControllerForCurrentGame = function(playerId) {
   // Used EXTERNALLY
   if (!gamesCtrl.currGame) return null;
-  var ctrl = { "name":gamesCtrl.currGame.name, "loc":gamesCtrl.currGame.settings.controllerLocation };
-  var ctrls = gamesCtrl.currGame.settings.controls;
+  var ctrl = { "name":gamesCtrl.currGame.name, "loc":gamesCtrl.currGame.settings.ctrl.loc };
+  var ctrls = gamesCtrl.currGame.settings.controls.keymap;
   if (playerId >= ctrls.length) return ctrl;
   ctrl.keymap = ctrls[playerId];
   
@@ -225,7 +254,7 @@ Games.prototype.getControllerForCurrentGame = function(playerId) {
 
 Games.prototype.translateKeyIdToButton = function(keyId, playerId) {
   if (!gamesCtrl.currGame) return null;
-  var ctrls = gamesCtrl.currGame.settings.controls;
+  var ctrls = gamesCtrl.currGame.settings.controls.keymap;
   if (playerId >= ctrls.length) return null;
   var multiKeys = keyId.split(/--/);
   var translatedButton = ctrls[playerId][multiKeys[0]];
@@ -236,6 +265,11 @@ Games.prototype.translateKeyIdToButton = function(keyId, playerId) {
   return translatedButton;
 }
 
+Games.prototype.sendSimulateButton = function (buttonData, upDown, pressId) {
+  if(gamesCtrl.gamesIFrame == null) return;
+  var messageToSend = {"type":"SimulateBtn", "buttonData":buttonData, "upDown":upDown, "pressId":pressId };
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
+}
 Games.prototype.simulateButton = function (keyId, playerId, upDown, pressId) {
   // Used EXTERNALLY
   var translatedButton = gamesCtrl.translateKeyIdToButton(keyId, playerId);
@@ -243,10 +277,7 @@ Games.prototype.simulateButton = function (keyId, playerId, upDown, pressId) {
     console.log(message.press.keyId + " [IGNORED]");
     return;
   }
-  var messageToSend = {"type":"SimulateBtn", "buttonData":translatedButton, "upDown":upDown, "pressId":pressId };
-  if(gamesCtrl.gamesIFrame) {
-    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
-  }
+  gamesCtrl.sendSimulateButton(translatedButton, upDown, pressId);
 }
 
 var gamesCtrl = new Games();

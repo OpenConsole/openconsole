@@ -32,6 +32,12 @@ GameControl.prototype.initialize = function () {
   window.addEventListener("message", gCtrl.receiveMessage, false);
 }
 
+GameControl.prototype.fireEvent = function (element, eventName, oEvent) {
+  element.fireEvent('on' + eventName, oEvent);
+}
+GameControl.prototype.simulateEvent = function (element, oEvent) {
+  element.dispatchEvent(oEvent);
+}
 GameControl.prototype.simulate = function (element, eventName, options) {
   var allOptions = gCtrl.extend(defaultOptions, options || {});
   var oEvent, eventType = null;
@@ -62,14 +68,14 @@ GameControl.prototype.simulate = function (element, eventName, options) {
                                                code: allOptions.code, key : allOptions.key, keyCode: allOptions.keyCode, which:allOptions.keyCode });
         break;
     }
-    element.dispatchEvent(oEvent);
+    gCtrl.simulateEvent(element, oEvent);
   }
   else {
     allOptions.clientX = allOptions.pointerX;
     allOptions.clientY = allOptions.pointerY;
     var evt = document.createEventObject();
     oEvent = gCtrl.extend(evt, options);
-    element.fireEvent('on' + eventName, oEvent);
+    gCtrl.fireEvent(element, eventName, oEvent);
   }
 }
 GameControl.prototype.extend = function (destination, source) {
@@ -210,7 +216,7 @@ GameControl.prototype.receiveMessage = function (event) {
   var message = event.data;
   switch(message.type) {
     case "SetGameInstace":
-      gCtrl.setGameInstance(message.gameInstance);
+      gCtrl.setGameInstance(message.gameCanvasId);
       break;
     case "SimulateBtn":
       gCtrl.simulateButton(message.buttonData, message.upDown, message.pressId);
