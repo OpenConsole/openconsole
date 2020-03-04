@@ -6,7 +6,7 @@ function CurrGame(gameName, gameSettings, gameLoc) {
 }
 
 function Games() {
-  this.defaultGame = "_ChooseGame"; // MazeGame ~ #HardCrash
+  this.metaGame = "_ChooseGame"; // Website to Choose Game
   // this.corsProxy = "https://cors-anywhere.herokuapp.com/";
   this.corsProxy = "https://cors-proxy-oc.glitch.me/";
   this.unityLoaderLoc = "https://openconsole-games.github.io/Games/_GenericUnityLoader/index.html";
@@ -42,15 +42,6 @@ Games.prototype.loadJSON = function (path, success, error) {
  */
 Games.prototype.onGameLoad = function () {
   // Currently OBSOLETE
-  if (!gamesCtrl.currGame) return;
-  if(gamesCtrl.currGame.name == gamesCtrl.defaultGame) {
-    var gamesArray = Object.values(gamesCtrl.gamesList).filter(game => { return game.name[0] != "_" });
-    var messageToSend = {"type":"SetGames", "gamesList":gamesArray, "prevGame":gamesCtrl.prevGame };
-    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
-  } else {
-    gamesCtrl.prevGame = gamesCtrl.currGame.name;
-  }
-    
   var ogl = gamesCtrl.currGame.settings.OnGameLoad;
   if(!ogl) return;
   
@@ -75,14 +66,26 @@ Games.prototype.setGameContentFrame = function (gameCanvasId) {
   var messageToSend = {"type":"SetGameInstace", "gameCanvasId":gameCanvasId };
   gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
 }
+Games.prototype.handleGamePicker = function () {
+  if(gamesCtrl.currGame.name == gamesCtrl.metaGame) {
+    var gamesArray = Object.values(gamesCtrl.gamesList).filter(game => { return game.name[0] != "_" });
+    var messageToSend = {"type":"SetGames", "gamesList":gamesArray, "prevGame":gamesCtrl.prevGame };
+    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
+  } else {
+    gamesCtrl.prevGame = gamesCtrl.currGame.name;
+  }
+}
 
 Games.prototype.cachedFrameLoaded = function () {
   gamesCtrl.setGameContentFrame(gamesCtrl.currGame.settings.canvas.id);
+  gamesCtrl.handleGamePicker();
+  // TODO: Obsolete?
   gamesCtrl.onGameLoad();
 }
 Games.prototype.remoteFrameLoaded = function () {
   var messageToSend = {"type":"SetGame", "loc": gamesCtrl.currGame.loc, "canvasId":gamesCtrl.currGame.settings.canvas.id };
   gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");//"https://openconsole-games.github.io");
+  // TODO: Obsolete?
   gamesCtrl.onGameLoad();
 }
 Games.prototype.unityFrameLoaded = function () {
@@ -90,6 +93,7 @@ Games.prototype.unityFrameLoaded = function () {
   
   var onLoadUnity = function (message) {
     if(message.data.type == "UnityLoaded") {
+      // TODO: Obsolete?
       gamesCtrl.onGameLoad();
       window.removeEventListener("message", onLoadUnity);
     }
@@ -164,11 +168,9 @@ Games.prototype.setGame = function (gameName) {
 }
 
 Games.prototype.onLoadDefaultGameList = function() {
-  if(gamesCtrl.defaultGame && gamesCtrl.defaultGame != "") {
-    if(gamesCtrl.currGame == null || gamesCtrl.currGame.name != gamesCtrl.defaultGame) {
-      if(gamesCtrl.gamesList[gamesCtrl.defaultGame] != null)
-        gamesCtrl.setGame(gamesCtrl.defaultGame);
-    }
+  if(gamesCtrl.metaGame && gamesCtrl.metaGame != "" && gamesCtrl.currGame == null) {
+    if(gamesCtrl.gamesList[gamesCtrl.metaGame] != null)
+      gamesCtrl.setGame(gamesCtrl.metaGame);
   }
 }
 Games.prototype.loadGamesList = function (jsonLocation) {
