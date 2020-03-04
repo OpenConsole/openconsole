@@ -67,13 +67,10 @@ Games.prototype.setGameContentFrame = function (gameCanvasId) {
   gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
 }
 Games.prototype.handleGamePicker = function () {
-  if(gamesCtrl.currGame.name == gamesCtrl.metaGame) {
-    var gamesArray = Object.values(gamesCtrl.gamesList).filter(game => { return game.name[0] != "_" });
-    var messageToSend = {"type":"SetGames", "gamesList":gamesArray, "prevGame":gamesCtrl.prevGame };
-    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
-  } else {
-    gamesCtrl.prevGame = gamesCtrl.currGame.name;
-  }
+  if(gamesCtrl.currGame.name != gamesCtrl.metaGame) return;
+  var gamesArray = Object.values(gamesCtrl.gamesList).filter(game => { return game.name[0] != "_" });
+  var messageToSend = {"type":"SetGames", "gamesList":gamesArray, "prevGame":gamesCtrl.prevGame };
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
 }
 
 Games.prototype.cachedFrameLoaded = function () {
@@ -108,6 +105,9 @@ Games.prototype.setGameFrame = function (gameObj) {
   gamesCtrl.currGame = gameObj;
   document.getElementById("game").innerHTML = "<iframe id=\"webgl-content\" src=\"\" scrolling=\"no\" frameBorder=\"0\"></iframe>";
   gamesCtrl.gamesIFrame = document.getElementById("webgl-content");
+  if(gamesCtrl.currGame.name != gamesCtrl.metaGame) {
+    gamesCtrl.prevGame = gamesCtrl.currGame.name;
+  }
   
   switch (gameObj.settings.game.type) {
     case "cached":
