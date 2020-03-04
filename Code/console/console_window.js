@@ -150,7 +150,7 @@ Games.prototype.setGame = function (gameName) {
   }
   var gameConfigLoc = gamesCtrl.gamesList[gameName].path;
   var configLoadLoc = gamesCtrl.gamesList[gameName].skipCorsProxy ? gameConfigLoc : gamesCtrl.corsProxy + gameConfigLoc;
-  gamesCtrl.loadJSON(configLoadLoc
+  gamesCtrl.loadJSON(configLoadLoc,
     function(settings) { 
       console.log(settings);
       var path = gamesCtrl.getGamePath(settings.game, gameConfigLoc);
