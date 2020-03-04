@@ -107,9 +107,10 @@ GameControl.prototype.simulateKey = function (keyCode, key, code) {
 GameControl.prototype.simulateClickDown = function (x, y) {
   if(gCtrl.gameInstance == null) return;
   gCtrl.simulate(gCtrl.gameInstance, "mousemove", { pointerX: x, pointerY: y });
+  gCtrl.simulate(gCtrl.gameInstance, "mousedown", { pointerX: x, pointerY: y });
   setTimeout(function() {
     gCtrl.simulate(gCtrl.gameInstance, "mousedown", { pointerX: x, pointerY: y });
-  }, 50);
+  }, 30);
 }
 GameControl.prototype.simulateClickUp = function (x, y) {
   if(gCtrl.gameInstance == null) return;
