@@ -6,13 +6,23 @@ body {
 }
 
 #header {
-    position: absolute; top: 0; left: 0; right: 0; height: 60px; max-height: 60px;
-    display: flex; flex-wrap: nowrap;
+    position: relative; top: 0; left: 0; right: 0;
+    display: flex; flex-wrap: nowrap; align-items: center;
+}
+.header-height {
+  height: 10vh;
+  min-height: 30px;
+  max-height: 60px;
 }
 
 img.logo, #internet-lost {
-    align-self: center;
-    flex-shrink: 0;
+  align-self: center;
+  flex-shrink: 0;
+  height: 7vh;
+  min-height: 21px;
+  max-height: 42px;
+  width: auto;
+  margin: 0 10px;
 }
 img.hiddenImage {
     visibility: hidden;
@@ -20,26 +30,51 @@ img.hiddenImage {
 
 img.fullscreen {
     position: absolute; right: 0;
-    height: 60px;
 }
 
 #receiver-id {
-    flex-shrink: 0;
-    align-self: center;
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 27px; font-weight: bold;
 }
 
 #gameTitle {
     color: white;
-    position: absolute; left: 80px; top: 36px; width: 120px;
+    position: absolute;
+    font-size: 8px;
+    left: 0px; top: 17px; width: 99px;
     text-align: right;
     white-space: nowrap;
+}
+@media screen and (min-height: 300px) {
+  #gameTitle {
+    font-size: 2.667vh;
+    top: 6vh; width: 33vh;
+  }
+}
+@media screen and (min-height: 600px) {
+  #gameTitle {
+    font-size: 16px;
+    top: 36px; width: 198px;
+  }
 }
 
 div.status {
     color: white;
     padding-left: 5px;
-    font-size: 50px; font-weight: bold;
+    font-size: 27px; font-weight: bold;
     align-self: center;
+    padding-bottom: 4px;
+}
+@media screen and (min-height: 300px) {
+  div.status, #receiver-id {
+    font-size: 9vh;
+  }
+}
+@media screen and (min-height: 555px) {
+  div.status, #receiver-id {
+    font-size: 50px;
+  }
 }
 #status {
     flex-shrink: 0;
@@ -56,7 +91,8 @@ div.status {
 
 #game {
     border: 0; margin: 0; padding: 0;
-    position: absolute; top: 60px; left: 0; right: 0; bottom: 0;
+    position: absolute; left: 0; right: 0; bottom: 0;
+    min-height: calc(100vh - 60px); max-height: calc(100vh - 30px); height: 90vh;
     display: flex; align-items: center; justify-content: center;
 }
 
@@ -70,19 +106,14 @@ div.status {
 }
 #id-icon {
  align-self: center;
- margin: 0 10px;
+ max-height: 24px; height: 70%;
 }
 .code-code-container {
  box-sizing:border-box;
  display:flex;
- justify-content:space-between;
- justify-content:center;
+ justify-content:space-evenly;
  flex-wrap:nowrap;
- text-align:center;
- margin-bottom:5px;
- margin-top:5px;
- padding:.5em 10px .5em 0;
- font-size: 45px; font-weight: bold;
  color: white;
- min-width: 200px;
+ min-width: 120px; max-width: 210px; width: 40vh;
+ height: 80%;
 }

@@ -26,6 +26,12 @@ MetaConsole.prototype.connectionDestroyed = function () {
   metaConsole.status.innerHTML = "Connection destroyed. Please refresh";
   metaConsole.playersText.innerHTML = "";
 }
+MetaConsole.prototype.getHeaderHeight = function() {
+  return Math.max(Math.min(0.1*window.innerHeight, 60), 30);
+}
+MetaConsole.prototype.getHeaderTextSize = function() {
+  return Math.max(Math.min(0.09*window.innerHeight, 50), 27);
+}
 
 MetaConsole.prototype.displayPlayers = function (conns) {
   if(!conns || conns.length == 0) {
@@ -35,7 +41,8 @@ MetaConsole.prototype.displayPlayers = function (conns) {
   }
   metaConsole.status.innerHTML = "Players:";
   metaConsole.playersText.innerHTML = "";
-  metaConsole.playersText.style = "font-size: " + 50 + "px";
+  var maxFontSize = metaConsole.getHeaderTextSize();
+  metaConsole.playersText.style = "font-size: " + maxFontSize + "px";
   var lines = 0, newLines = 0;
   conns.forEach(function(conn, i) {
     var previousText = metaConsole.playersText.innerHTML;
@@ -51,7 +58,7 @@ MetaConsole.prototype.displayPlayers = function (conns) {
       else {
         // Decrease font size before going to new line
         lines++;
-        metaConsole.playersText.style = "font-size: " + Math.ceil(50/(lines*1.1+1)) + "px";
+        metaConsole.playersText.style = "font-size: " + Math.ceil(maxFontSize/(lines*1.1+1)) + "px";
       }
     }
     // If getting to end make sure that we fill up these new lines
@@ -67,7 +74,7 @@ MetaConsole.prototype.updateGameSize = function() {
   var gameContainer = gamesCtrl.getGameIFrame();
   if (gameContainer == null) return;
 
-  var myWidth = window.innerWidth, myHeight = window.innerHeight - 60;
+  var myWidth = window.innerWidth, myHeight = window.innerHeight - metaConsole.getHeaderHeight();
   var aspectRatio = gamesCtrl.getCurrGameAspect();
   if(aspectRatio && aspectRatio != 0) {
     var deltaAspect = (myWidth/myHeight) / parseFloat(aspectRatio);
