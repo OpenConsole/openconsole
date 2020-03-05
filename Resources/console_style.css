@@ -91,9 +91,18 @@ div.status {
 
 #game {
     border: 0; margin: 0; padding: 0;
-    position: absolute; left: 0; right: 0; bottom: 0;
-    min-height: calc(100vh - 60px); max-height: calc(100vh - 30px); height: 90vh;
+    position: absolute; top: 30px; left: 0; right: 0; bottom: 0;
     display: flex; align-items: center; justify-content: center;
+}
+@media screen and (min-height: 300px) {
+  #game {
+    top: 10vh;
+  }
+}
+@media screen and (min-height: 600px) {
+  #game {
+    top: 60px;
+  }
 }
 
 #webgl-content {
@@ -115,5 +124,5 @@ div.status {
  flex-wrap:nowrap;
  color: white;
  min-width: 120px; max-width: 210px; width: 40vh;
- height: 80%;
+ height: 80%; flex-shrink: 0;
 }
