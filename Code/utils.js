@@ -12,7 +12,7 @@ var save_object = function(name, obj) {
   localStorage.setItem(name, JSON.stringify(obj));
 }
 var load_object = function(name) {
-  var value = this.getItem(name);
+  var value = localStorage.getItem(name);
   return value && JSON.parse(value);
 }
 
