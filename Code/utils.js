@@ -8,6 +8,14 @@ var getId = function(a, b) {
 };
 
 
+var save_object = function(name, obj) {
+  localStorage.setItem(name, JSON.stringify(obj));
+}
+var load_object = function(name) {
+  var value = this.getItem(name);
+  return value && JSON.parse(value);
+}
+
 
 
 var maximizedEvent = new Event('maximized');

@@ -34,21 +34,12 @@ Network.prototype.peerjsLoadError = function() {
  * peer object.
  */
 Network.prototype.loadPreviousAB = function() {
-  var name = "prevAB=";
-  var ca = document.cookie.split(';');
-  for(var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      var prevAB = c.substring(name.length, c.length).split(' ');
-      consoleNet.a = parseInt(prevAB[0]);
-      consoleNet.b = parseInt(prevAB[1]);
-      return 1;
-    }
-  }
-  return 0;
+  var prevAB = load_object('prevAB');
+  if (prevAB == null) return 0;
+
+  consoleNet.a = prevAB.a;
+  consoleNet.b = prevAB.b;
+  return 1;
 }
 Network.prototype.generateRandomAB = function() {
     consoleNet.a = Math.floor(Math.random() * 990) + 10;
@@ -56,10 +47,7 @@ Network.prototype.generateRandomAB = function() {
     consoleNet.b = b1 * 100 + b2 * 10 + b3;
 }
 Network.prototype.saveAB = function(a, b) {
-  var d = new Date();
-  d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
-  var expires = "expires="+d.toUTCString();
-  document.cookie = "prevAB=" + a + " " + b + ";" + expires + ";";
+  save_object('prevAB', {"a":a, "b":b });
 }
 Network.prototype.initialize = function() {
   if(typeof Peer == "undefined") {

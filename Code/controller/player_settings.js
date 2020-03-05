@@ -1,19 +1,3 @@
-function bake_cookie(name, value, days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    var cookie = [name, '=', JSON.stringify(value), expires, '; domain=.', window.location.host.toString(), '; path=/;'].join('');
-    document.cookie = cookie;
-}
-function read_cookie(name) {
-    var result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-    result && (result = JSON.parse(result[1]));
-    return result;
-}
-
 function Player() {
   this.lastServer = null;
   this.name = null;
@@ -25,10 +9,10 @@ Player.prototype.chooseRandomName = function() {
 }
 
 Player.prototype.save = function() {
-  bake_cookie("Player", player, 1);
+  save_object("Player", player, 1);
 }
 Player.prototype.load = function() {
-  var oldPlayer = read_cookie("Player");
+  var oldPlayer = load_object("Player");
   if (!oldPlayer) return;
   player.lastServer = oldPlayer.lastServer;
   player.name = oldPlayer.name;
