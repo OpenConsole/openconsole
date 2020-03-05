@@ -58,7 +58,7 @@ MetaConsole.prototype.displayPlayers = function (conns) {
       else {
         // Decrease font size before going to new line
         lines++;
-        metaConsole.playersText.style = "font-size: " + Math.ceil(maxFontSize/(lines*1.1+1)) + "px";
+        metaConsole.playersText.style = "font-size: " + (maxFontSize/(lines*1.1+1)) + "px";
       }
     }
     // If getting to end make sure that we fill up these new lines
