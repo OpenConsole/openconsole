@@ -42,20 +42,20 @@ img.fullscreen {
     color: white;
     position: absolute;
     font-size: 8px;
-    left: 0px; top: 17px; width: 99px;
+    left: 0px; top: 17px; width: 110px;
     text-align: right;
     white-space: nowrap;
 }
 @media screen and (min-height: 300px) {
   #gameTitle {
     font-size: 2.667vh;
-    top: 6vh; width: 33vh;
+    top: 6vh; width: 36.7vh;
   }
 }
 @media screen and (min-height: 600px) {
   #gameTitle {
     font-size: 16px;
-    top: 36px; width: 198px;
+    top: 36px; width: 220px;
   }
 }
 
