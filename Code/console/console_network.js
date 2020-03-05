@@ -75,7 +75,9 @@ Network.prototype.createPeer = function() {
   var myId = getId(consoleNet.a, consoleNet.b);
   // Create own peer object with connection to shared PeerJS server
   consoleNet.peer = new Peer(myId, {
-      debug: 2
+    host: 'peerjs-openconsole.herokuapp.com',
+    secure: true,
+    debug: 2
   });
   consoleNet.peer.consoleState = 0;
   consoleNet.peer.on('open', function (id) {
