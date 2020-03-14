@@ -296,19 +296,17 @@ body {
   align-items: center;
   justify-content: space-between;
 }
-#game-container, #controller {
+#iframe-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 45vw;
   height: 25.3vw;
   max-width: 87.1vh;
   max-height: 49vh;
 }
-#game-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#game {
+#game, #controller {
   width: 100%;
   height: 100%;
 }

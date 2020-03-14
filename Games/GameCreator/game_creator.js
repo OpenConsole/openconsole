@@ -428,10 +428,34 @@ GameCreator.prototype.recieveMessage = function (event) {
   switch(message.type) {
     case "Key":
       console.log(message.key);
-	    //TODO: playerNet.sendKey(message.key);
+	    gCreator.simulateButton(message.key, gCreator.currActiveTab);
       break;
   }
 }
+GameCreator.prototype.translateKeyIdToButton = function(keyId, playerId) {
+  var ctrls = gCreator.currGameSettings.controls.keymap;
+  if (playerId >= ctrls.length) return null;
+  var multiKeys = keyId.split(/--/);
+  var translatedButton = ctrls[playerId][multiKeys[0]];
+  if (multiKeys.length > 1) {
+    translatedButton.x = multiKeys[1];
+    translatedButton.y = multiKeys[2];
+  }
+  return translatedButton;
+}
+GameCreator.prototype.simulateButton = function (key, playerId) {
+  if(gCreator.gameIFrame == null) {
+    return;
+  }
+  var translatedButton = gCreator.translateKeyIdToButton(key.keyId, playerId);
+  if(translatedButton == null) {
+    console.log(key.keyId + ", " + playerId + " [IGNORED]");
+    return;
+  }
+  var messageToSend = {"type":"SimulateBtn", "buttonData":translatedButton, "upDown":key.upDown, "pressId":key.pressId };
+  gCreator.gameIFrame.contentWindow.postMessage(messageToSend, "*");
+}
+
 GameCreator.prototype.updateGameSize = function() {
   var aspectRatio = gCreator.currGameSettings.canvas.aspect;
   var myWidth = 100, myHeight = 100;
