@@ -1,0 +1,367 @@
+@-ms-viewport {
+ width:100vw;
+ min-zoom:100%;
+ zoom:100%
+}
+@-ms-viewport {
+ user-zoom:fixed;
+ min-zoom:100%
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}
+body {
+  -moz-user-select:none;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+	overflow	: hidden;
+	padding		: 0;
+	margin		: 0;
+  background-color: #172836;
+  font-family: 'Myriad Pro Regular';
+  font-size: 4vmin;
+  text-align: center;
+  color: #fff;
+}
+@media screen and (min-height: 750px) and (min-width: 750px) {
+  body {
+    font-size: 30px;
+  }
+  .input {
+    font-size: 30px;
+  }
+}
+@font-face {
+  font-family: 'Myriad Pro Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Myriad Pro Regular'), url('MYRIADPRO-REGULAR.woff') format('woff');
+}
+
+.page {
+ position:absolute;
+ left:0; top:0; bottom:0; right:0;
+ overflow:hidden;
+ background-color: #172836;
+}
+#game_creator {
+  display: flex;
+}
+
+
+.window-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  position: relative;
+  min-width: 5%;
+  min-height: 100%;
+}
+.window-button {
+  writing-mode: sideways-lr;
+  background-color: #2e506b;
+  color: #777;
+  width: calc(5vw - 4px);
+  height: calc(50vh - 6px);
+  line-height: calc(5vw - 8px);
+
+  border: none;
+  border-bottom-style:solid;
+  border-bottom-width:3px;
+  border-bottom-color:#172836;
+}
+.window-button.active {
+  background-color: #223b4f;
+  color: #fff;
+  width: 5.5vw;
+}
+
+.input-side {
+  position: relative;
+  min-width: 45%;
+  min-height: 100%;
+}
+#type-select {
+  min-height: 8vh;
+  line-height: 8vh;
+  margin: 2vh 2vw;
+  display: flex;
+  justify-content: space-between;
+}
+.type-button {
+  padding: 0 2vw;
+}
+
+#game-select {
+  margin: 2vh 1vw 0 1vw;
+  display: flex;
+  flex-direction: column;
+}
+#option-descriptions {
+  min-height: 4vh;
+  line-height: 3vh;
+  display: flex;
+  justify-content: space-evenly;
+}
+#option-inputs {
+  min-height: 8vh;
+  display: flex;
+  justify-content: space-evenly;
+}
+#game-loc-desc {
+  width: 16vw;
+}
+#game-canvasid-desc {
+  width: 11.5vw;
+}
+#game-apect-desc {
+  width: 9vw;
+}
+#game-loc-input {
+  width: 14vw;
+}
+#game-canvasid-input {
+  width: 10vw;
+}
+#game-apect-input {
+  width: 7vw;
+}
+.input-box {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 1vh; bottom: 1vh; left: 1vw; right: 1vw;
+}
+
+
+#controller-select {
+  min-height: 8vh;
+  line-height: 8vh;
+  margin: 3vh 2vw 1vh 1vw;
+  display: flex;
+  justify-content: space-between;
+}
+@media screen and (max-aspect-ratio: 227/100) {
+  #controller-select, #option-descriptions, #keymap-column-desc {
+    font-size: 1.76vw;
+  }
+}
+.ctrl-button {
+  padding: 0 0.8vw;
+}
+
+#custom-ctrl-select {
+  max-height: 0; min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  transition: max-height 0.2s, min-height 0.2s, margin 0.2s;
+}
+#custom-ctrl-select.active {
+  min-height: calc(8vh + 6px);
+  margin: 1vh 2vw 1vh 1vw;
+}
+.custom-ctrl-info {
+  display: flex;
+  margin-right: 2vw;
+  justify-content: center;
+  align-items: center;
+}
+#custom-ctrl-loc-input {
+  width: 28vw;
+  margin: 3px;
+}
+
+
+#ctrl-opts {
+  height: 100%;
+  margin: 2vh 2vw 0 2vw;
+  display: flex;
+  flex-direction: column;
+}
+#player-count {
+  display: flex;
+  width: 100%;
+  height: calc(9vh + 5px);
+}
+#player-count-input {
+  width: 2vw;
+  margin: 0 1vh 1vh 0;
+}
+#player-count-keymap-select {
+  scrollbar-width: thin;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.flipped {
+  display: flex;
+  width: 100%;
+  transform:rotateX(180deg);
+}
+.player-count-num {
+  min-width: 3.2vw;
+  max-width: 8vw;
+  flex-grow: 1;
+  line-height: 8vh;
+  margin-right: 0.6vw;
+  margin-top: calc(0.8vh + 2px);
+  background-color: #2e506b;
+}
+.player-count-num.active {
+  margin-top: 2px;
+  transform: translate(-3px, 0);
+  background-color: #172836;
+  box-shadow: 4px 4px #172836, 3px 3px #172836, 2px 2px #172836, 1px 1px #172836;
+}
+
+#keymap {
+  width: 100%; height: 49vh;
+  background-color: #172836;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+#keymap-column-desc {
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8.5vw 0 1.5vw;
+}
+.mapping {
+  width: 100%;
+  height: calc(100% - 10vh);
+  border-collapse: collapse;
+}
+.keymap-row {
+  background-color: #172836;
+  height: 10vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.keymap-row:nth-child(odd) {
+  background-color: #1d3142;
+}
+.keymap-elem {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.key-id-input {
+  width: 4vw;
+  height: 7vh;
+}
+.button-text-input {
+  width: 10vw;
+  height: 7vh;
+}
+.press-select, .press-delete {
+  background-color: #2e506b;
+  height: 7vh;
+  overflow: hidden;
+  padding: 0 0.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.press-select.active, .press-delete.active {
+  background-color: #1eaed3;
+  color: #fff;
+}
+.press-select {
+  width: 8vw;
+  color: #777;
+}
+.press-delete {
+  width: 3vw;
+}
+
+.display-side {
+  min-width: 50%;
+  height: 99vh;
+  margin-top: 0.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+#game-container, #controller {
+  width: 45vw;
+  height: 25.3vw;
+  max-width: 87.1vh;
+  max-height: 49vh;
+}
+#game-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#game {
+  width: 100%;
+  height: 100%;
+}
+
+.button {
+  background-color: #2e506b;
+  color: #777;
+  box-shadow: 4px 4px #172836, 3px 3px #172836, 2px 2px #172836, 1px 1px #172836;
+}
+.button.active {
+  background-color: #1eaed3;
+  color: #fff;
+  box-shadow: 1px 1px #137087;
+  transform: translate(3px, 3px);
+}
+.input {
+  background-color: #2e506b;
+  font-family: 'Myriad Pro Regular';
+  font-size: 4vmin;
+  border: none;
+  padding: 0 1vw;
+  color: #fff;
+}
+.disabled {
+  display: none;
+}
+
+
+
+
+
+
+.punch {
+ color:#1eaed3
+}
+.punch-bg {
+ background-color:#1eaed3
+}
+.punch-border {
+ border-color:#1eaed3
+}
+.dark-border {
+ border-color:#172836
+}
+.shade-bg {
+ background-color:#2e506b
+}
+.shade-text {
+ color:#777
+}
+.dark-shade-bg {
+ background-color:#223b4f
+}
+.dark-bg {
+ background-color:#172836
+}

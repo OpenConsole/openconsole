@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <title>OpenConsole</title>
+    <link rel="shortcut icon" href="Resources/favicon.ico">
+    <link rel="stylesheet" href="game_creator_style.css">
+  </head>
+<body class="page">
+  <div id="game_creator" class="page">
+    <div class="dark-bg window-side">
+      <div id="game-info-btn" class="window-button">Game Info</div>
+      <div id="game-settings-btn" class="window-button active">Game Settings</div>
+    </div>
+    <div id="game-info" class="dark-shade-bg input-side disabled">
+    </div>
+    <div id="game-settings" class="dark-shade-bg input-side">
+      <div class="input-box">
+        <div id="type-select">
+          <div id="cached-btn" class="button type-button">Cached</div>
+          <div id="remote-btn" class="button type-button">Remote</div>
+          <div id="unity-btn" class="button type-button">Unity</div>
+        </div>
+        <div id="game-select">
+          <div id="option-descriptions">
+            <div id="game-loc-desc" class="input-desc">Game Location:</div>
+            <div id="game-canvasid-desc" class="input-desc">Canvas ID:</div>
+            <div id="game-apect-desc" class="input-desc">Aspect:</div>
+          </div>
+          <div id="option-inputs">
+            <input type="text" id="game-loc-input" class="input" name="loc" placeholder="eg. index.html">
+            <input type="text" id="game-canvasid-input" class="input" name="cid" placeholder="eg. canvas">
+            <input type="number" step="0.00001" id="game-apect-input" class="input" name="aspect" value="0">
+          </div>
+        </div>
+        <div id="controller-select">
+          <div>
+            Controller:
+          </div>
+          <div id="two_btn-select" class="button ctrl-button">Two Btn</div>
+          <div id="joystick-select" class="button ctrl-button">Joystick</div>
+          <div id="multi_btn-select" class="button ctrl-button">Multi Btn</div>
+          <div id="custom-select" class="button ctrl-button">Custom</div>
+        </div>
+        <div id="custom-ctrl-select" class="">
+          <div class="custom-ctrl-info"><div>Location:</div></div>
+          <input type="text" id="custom-ctrl-loc-input" class="input" name="ctrl-loc" placeholder="eg. https://eg.com/Ctrls/2btn.html">
+        </div>
+        <div id="ctrl-opts">
+          <div id="player-count">
+            <input type="number" min="1" max="999" id="player-count-input" class="input" name="pc" value="1">
+
+            <div id="player-count-keymap-select" class="flipped">
+              <div id="player-tab-holder" class="flipped">
+              </div>
+            </div>
+          </div>
+          <div id="keymap">
+            <div id="keymap-column-desc">
+              <div>Key Id:</div><div>Button text:</div><div>Press data:</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="game-info" class="dark-shade-bg input-side disabled">
+      <div class="input-box">
+      </div>
+    </div>
+    <div class="display-side">
+      <div id="game-container"><iframe id="game" src="" allowfullscreen="" scrolling="no" noresize="noresize" frameborder="0"></iframe></div>
+      <iframe id="controller" src="" allowfullscreen="" scrolling="no" noresize="noresize" frameborder="0"></iframe>
+    </div>
+  </div>
+  <script src="./game_creator.js"></script>
+</body>
+</html>
