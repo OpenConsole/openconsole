@@ -22,7 +22,7 @@ const defaultOptions = {
 const minDownTime = 60;
 
 function GameControl() {
-  this.strict = true;
+  this.strict = false;
   this.controllerPageLocation = "https://openconsole.github.io";
   this.seenIDs = {};
   this.gameInstance = document.body;

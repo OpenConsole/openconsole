@@ -83,7 +83,7 @@ GenericButton.prototype.clickUp = function(thisBtn) {
 }
 
 function GenericCtrl() {
-  this.strict = true;
+  this.strict = false;
   this.controllerPageLocation = "https://openconsole.github.io";
   this.enabledButtons = new Array();
   this.pressed = [];
