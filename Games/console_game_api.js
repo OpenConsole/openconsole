@@ -204,6 +204,9 @@ GameControl.prototype.simulateButton = function (buttonData, type, pressID) {
 }
 
 GameControl.prototype.setGameInstance = function (giIdName) {
+  if (giIdName == null) {
+    return;
+  }
   gCtrl.gameInstance = document.getElementById(giIdName);
   if (gCtrl.gameInstance) return;
   setTimeout(function() { gCtrl.setGameInstance(giIdName); }, 1000);
