@@ -525,7 +525,7 @@ GameCreator.prototype.setGameIFrame = function () {
       }
       break;
   }
-  if (loadLoc == null || loadLoc == gCreator.gameIFrame.src) {
+  if (loadLoc == null) {
     return;
   }
   gCreator.gameIFrame.setAttribute("frameborder", "1");
