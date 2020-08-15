@@ -1,6 +1,6 @@
 function GameCreator() {
-  // this.corsProxy = "https://cors-anywhere.herokuapp.com/";
-  this.corsProxy = "https://cors-proxy-oc.glitch.me/";
+  this.corsProxy = "https://cors-anywhere.herokuapp.com/";
+  // this.corsProxy = "https://cors-proxy-oc.glitch.me/";
   
   this.gamesListLoc = "";
   
