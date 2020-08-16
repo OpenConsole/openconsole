@@ -115,6 +115,7 @@ div.status {
 }
 #id-icon {
  align-self: center;
+ margin: 0 10px;
  max-height: 24px; height: 70%;
 }
 .code-code-container {
@@ -123,6 +124,6 @@ div.status {
  justify-content:space-evenly;
  flex-wrap:nowrap;
  color: white;
- min-width: 120px; max-width: 210px; width: 40vh;
+ min-width: 120px; padding-right: 10px;
  height: 80%; flex-shrink: 0;
 }
