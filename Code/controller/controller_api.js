@@ -13,7 +13,7 @@ SubController.prototype.initialize = function() {
 SubController.prototype.setControllerLayout = function (keymap) {
   // Used EXTERNALLY
   var messageToSend = {"type":"SetLayout", "keymap":keymap };
-  if(ctrlApi.controllerLoaded) {
+  if (ctrlApi.controllerLoaded) {
     ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
   } else {
     var setLayoutFunct = function (event) {
@@ -31,7 +31,7 @@ SubController.prototype.setGame = function (scLocation) {
 SubController.prototype.sendCustomMessage = function (message) {
   // Used EXTERNALLY
   var messageToSend = message;
-  if(ctrlApi.controllerLoaded) {
+  if (ctrlApi.controllerLoaded) {
     ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
   } else {
     var setLayoutFunct = function (event) {
@@ -48,7 +48,7 @@ SubController.prototype.sendMessage = function (event) {
     case "Key":
 	  playerNet.sendKey(message.key);
       break;
-    case 'Custom':
+    case "Custom":
       playerNet.sendCustomMessage(message);
       break;
   }

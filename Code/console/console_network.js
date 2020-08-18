@@ -271,9 +271,15 @@ Network.prototype.setContollerGameAll = function() {
   // Used EXTERNALLY
   consoleNet.conns.forEach(consoleNet.setContollerGame);
 }
-Network.prototype.sendCustomMessage = function(message) {
+Network.prototype.sendCustomMessage = function (message) {
   // Used EXTERNALLY
-  consoleNet.conns.forEach(conn => consoleNet.signal(conn, JSON.stringify(message)));
+  if (message.to !== undefined) {
+	if (message.to <= consoleNet.conns.length) {
+	  consoleNet.signal(consoleNet.conns[message.to - 1], JSON.stringify(message));
+	}
+  } else {
+    consoleNet.conns.forEach(conn => consoleNet.signal(conn, JSON.stringify(message)));
+  }
 }
 
 

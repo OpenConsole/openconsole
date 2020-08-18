@@ -202,8 +202,8 @@ Games.prototype.loadGamesList = function (jsonLocation, skipCorsProxy) {
 Games.prototype.loadDefaultGamesList = function() {
   if(gamesCtrl.gamesList) return;
   
-  //gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json');
-  gamesCtrl.loadGamesList('https://openconsole-games.github.io/Games/gamesList.json', true);
+  gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json');
+  //gamesCtrl.loadGamesList('https://openconsole-games.github.io/Games/gamesList.json', true);
   setTimeout(gamesCtrl.loadDefaultGamesList, 5000);
 }
 
@@ -293,7 +293,7 @@ Games.prototype.simulateButton = function (keyId, playerId, upDown, pressId) {
 Games.prototype.sendCustomMessage = function(id, message) {
   // Used EXTERNALLY
   if(gamesCtrl.gamesIFrame == null) return;
-  message.id = id;
+  message.from = id + 1;
   gamesCtrl.gamesIFrame.contentWindow.postMessage(message, "*");
 }
 
