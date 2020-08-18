@@ -202,7 +202,7 @@ Games.prototype.loadGamesList = function (jsonLocation, skipCorsProxy) {
 Games.prototype.loadDefaultGamesList = function() {
   if(gamesCtrl.gamesList) return;
   
-  gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json');
+  gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json', true);
   //gamesCtrl.loadGamesList('https://openconsole-games.github.io/Games/gamesList.json', true);
   setTimeout(gamesCtrl.loadDefaultGamesList, 5000);
 }
