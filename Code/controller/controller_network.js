@@ -82,9 +82,13 @@ Network.prototype.sendDisconnect = function() {
   var message = { "type":"Disconnect" };
   playerNet.signal(JSON.stringify(message));
 }
-Network.prototype.sendKey = function(keyPress) {
+Network.prototype.sendKey = function (keyPress) {
   // Used EXTERNALLY
   var message = { "type":"KeyPress", "press":keyPress };
+  playerNet.signal(JSON.stringify(message));
+}
+Network.prototype.sendCustomMessage = function (message) {
+  // Used EXTERNALLY
   playerNet.signal(JSON.stringify(message));
 }
 Network.prototype.quitGame = function() {
@@ -123,7 +127,7 @@ Network.prototype.disconnect = function() {
  * Sets up callbacks that handle any events related to the
  * connection and data received on it.
  */
-Network.prototype.connect = function(id) {
+Network.prototype.connect = function (id) {
   // Used EXTERNALLY
   if (id.length < 4)
     return 0;
@@ -138,7 +142,7 @@ Network.prototype.connect = function(id) {
   playerNet.netConnect(connId);
   return 1;
 }
-Network.prototype.netConnect = function(peerjsId) {
+Network.prototype.netConnect = function (peerjsId) {
   // Create connection to destination peer specified in the input field
   playerNet.conn = playerNet.peer.connect(peerjsId, {
     reliable: true,
@@ -188,6 +192,9 @@ Network.prototype.handleMessage = function (message) {
       break;
     case 'SetControllerLayout':
       ctrlApi.setControllerLayout(message.keymap);
+      break;
+    case 'Custom':
+      ctrlApi.sendCustomMessage(message);
       break;
     default:
       console.log("Unkown message! " + message.type);

@@ -11,6 +11,7 @@ SubController.prototype.initialize = function() {
 }
 
 SubController.prototype.setControllerLayout = function (keymap) {
+  // Used EXTERNALLY
   var messageToSend = {"type":"SetLayout", "keymap":keymap };
   if(ctrlApi.controllerLoaded) {
     ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
@@ -23,15 +24,32 @@ SubController.prototype.setControllerLayout = function (keymap) {
   }
 }
 SubController.prototype.setGame = function (scLocation) {
-    ctrlApi.controllerLoaded = false;
-    ctrlApi.scIFrame.src = scLocation;
+  // Used EXTERNALLY
+  ctrlApi.controllerLoaded = false;
+  ctrlApi.scIFrame.src = scLocation;
+}
+SubController.prototype.sendCustomMessage = function (message) {
+  // Used EXTERNALLY
+  var messageToSend = message;
+  if(ctrlApi.controllerLoaded) {
+    ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
+  } else {
+    var setLayoutFunct = function (event) {
+      ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
+      ctrlApi.scIFrame.removeEventListener("load", setLayoutFunct);
+    }
+    ctrlApi.scIFrame.addEventListener("load", setLayoutFunct);
+  }
 }
 
 SubController.prototype.sendMessage = function (event) {
   var message = event.data;
   switch(message.type) {
     case "Key":
-	    playerNet.sendKey(message.key);
+	  playerNet.sendKey(message.key);
+      break;
+    case 'Custom':
+      playerNet.sendCustomMessage(message);
       break;
   }
 }

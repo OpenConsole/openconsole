@@ -100,6 +100,10 @@ Games.prototype.unityFrameLoaded = function () {
   var messageToSend = {"type":"SetUnityGame", "loc": gamesCtrl.currGame.loc, "corsProxy":gamesCtrl.corsProxy };
   gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");//"https://openconsole-games.github.io");
 }
+Games.prototype.customFrameLoaded = function () {
+  var messageToSend = {"type":"SetGame", "settings": gamesCtrl.currGame.settings };
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");;
+}
 
 Games.prototype.setGameFrame = function (gameObj) {
   gamesCtrl.currGame = gameObj;
@@ -124,6 +128,11 @@ Games.prototype.setGameFrame = function (gameObj) {
       // Unity files may be on Remote server, game can be loaded from there.
       gamesCtrl.gamesIFrame.src = gamesCtrl.unityLoaderLoc;
       gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.unityFrameLoaded );
+      break;
+    case "custom":
+      // Load custom frame
+      gamesCtrl.gamesIFrame.src = gameObj.settings.custom.loaderLoc;
+      gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.customFrameLoaded );
       break;
   }
 }
@@ -205,6 +214,9 @@ Games.prototype.handleMessageFromGame = function (event) {
     case "SetGame":
       gamesCtrl.setGame(message.game.name);
       break;
+    case "Custom":
+      consoleNet.sendCustomMessage(message);
+      break;
   }
 }
 
@@ -277,6 +289,12 @@ Games.prototype.simulateButton = function (keyId, playerId, upDown, pressId) {
     return;
   }
   gamesCtrl.sendSimulateButton(translatedButton, upDown, pressId);
+}
+Games.prototype.sendCustomMessage = function(id, message) {
+  // Used EXTERNALLY
+  if(gamesCtrl.gamesIFrame == null) return;
+  message.id = id;
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(message, "*");
 }
 
 var gamesCtrl = new Games();

@@ -189,6 +189,9 @@ Network.prototype.handleMessage = function (conn, message) {
     case 'Pong':
       conn.isActive = 3;
       break;
+    case 'Custom':
+      gamesCtrl.sendCustomMessage(conn.id, message);
+      break;
     default:
       console.log("Received unknown! " + message);
       break;
@@ -267,6 +270,10 @@ Network.prototype.sendDisconnect = function (conn) {
 Network.prototype.setContollerGameAll = function() {
   // Used EXTERNALLY
   consoleNet.conns.forEach(consoleNet.setContollerGame);
+}
+Network.prototype.sendCustomMessage = function(message) {
+  // Used EXTERNALLY
+  consoleNet.conns.forEach(conn => consoleNet.signal(conn, JSON.stringify(message)));
 }
 
 
