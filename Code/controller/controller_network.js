@@ -95,8 +95,8 @@ Network.prototype.quitGame = function() {
   // Used EXTERNALLY
   var gameSelect = "_ChooseGame";
   if (playerNet.currentGame && playerNet.currentGame != gameSelect) {
-    playerNet.currentGame = null;
-    ctrlApi.setGame("");
+    //playerNet.currentGame = null;
+    //ctrlApi.setGame(""); // TODO: maybe this breaks stuff/slows down change
     var message = { "type":"SetGame", "name":gameSelect };
     playerNet.signal(JSON.stringify(message));
   }
