@@ -189,6 +189,8 @@ Games.prototype.onLoadDefaultGameList = function() {
   if(gamesCtrl.metaGame && gamesCtrl.metaGame != "" && gamesCtrl.currGame == null) {
     if(gamesCtrl.gamesList[gamesCtrl.metaGame] != null)
       gamesCtrl.setGame(gamesCtrl.metaGame);
+  } else if(gamesCtrl.currGame != null) {
+    gamesCtrl.handleGamePicker();
   }
 }
 Games.prototype.loadGamesList = function (jsonLocation, skipCorsProxy) {
