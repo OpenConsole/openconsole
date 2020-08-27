@@ -324,8 +324,7 @@ Games.prototype.sendPlayersToGame = function(conns) {
 }
 Games.prototype.sendPlayerInfo = function(players) {
   if(gamesCtrl.gamesIFrame == null) return;
-  var message = players;
-  message.type = "SetPlayers";
+  var message = {"type":"SetPlayers","players":players};
   gamesCtrl.gamesIFrame.contentWindow.postMessage(message, "*");
 }
 
