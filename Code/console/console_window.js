@@ -14,6 +14,7 @@ function Games() {
   this.currGame = null;
   this.gamesList = null;
   this.gamesIFrame = null;
+  this.players = [];
   window.addEventListener("message", this.handleMessageFromGame, false);
 }
 Games.prototype.initialize = function() {
@@ -84,6 +85,7 @@ Games.prototype.handleGamePicker = function () {
 Games.prototype.cachedFrameLoaded = function () {
   gamesCtrl.setGameContentFrame(gamesCtrl.currGame.settings.canvas.id);
   gamesCtrl.handleGamePicker();
+  gamesCtrl.sendPlayerInfo(gamesCtrl.players);
   // TODO: Obsolete?
   gamesCtrl.onGameLoad();
 }
@@ -313,6 +315,17 @@ Games.prototype.sendCustomMessage = function(id, message) {
   // Used EXTERNALLY
   if(gamesCtrl.gamesIFrame == null) return;
   message.from = id + 1;
+  gamesCtrl.gamesIFrame.contentWindow.postMessage(message, "*");
+}
+Games.prototype.sendPlayersToGame = function(conns) {
+  // Used EXTERNALLY
+  gamesCtrl.players = conns.map(conn => {"name":conn.metadata.name,"id":conn.id});
+  gamesCtrl.sendPlayerInfo(gamesCtrl.players);
+}
+Games.prototype.sendPlayerInfo = function(players) {
+  if(gamesCtrl.gamesIFrame == null) return;
+  var message = players;
+  message.type = "SetPlayers";
   gamesCtrl.gamesIFrame.contentWindow.postMessage(message, "*");
 }
 

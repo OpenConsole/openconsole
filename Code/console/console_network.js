@@ -138,6 +138,7 @@ Network.prototype.createPeer = function() {
     
     console.log("Connected to: " + conn.peer);
     consoleNet.showConnections();
+    consoleNet.sendConnsToGame();
     consoleNet.setContollerGame(conn);
   });
   conn.on('data', function (data) {
@@ -155,6 +156,7 @@ Network.prototype.createPeer = function() {
       }
     }
     consoleNet.showConnections();
+    consoleNet.sendConnsToGame();
     conn = null;
   });
   /*
@@ -209,6 +211,7 @@ Network.prototype.resetPlayerIds = function () {
     }
   }
   consoleNet.showConnections();
+  consoleNet.sendConnsToGame();
 }
 /**
  * Check for dead connections
@@ -284,6 +287,9 @@ Network.prototype.sendCustomMessage = function (message) {
 
 
 
+Network.prototype.sendConnsToGame = function() {
+  gamesCtrl.sendPlayersToGame(consoleNet.conns);
+}
 Network.prototype.showConnections = function() {
   metaConsole.displayPlayers(consoleNet.conns);
 }
