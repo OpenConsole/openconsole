@@ -46,7 +46,7 @@ SubController.prototype.sendMessage = function (event) {
   var message = event.data;
   switch(message.type) {
     case "Key":
-	  playerNet.sendKey(message.key);
+	    playerNet.sendKey(message.key);
       break;
     case "Custom":
       playerNet.sendCustomMessage(message);
