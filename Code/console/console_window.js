@@ -18,6 +18,14 @@ function Games() {
 }
 Games.prototype.initialize = function() {
   gamesCtrl.loadDefaultGamesList();
+
+  document.body.addEventListener("keydown", function(e) {
+    if(e.key == "d") {
+      gamesCtrl.loadLocalGamesList();
+    } else if (e.key == "a") {
+      gamesCtrl.loadACGamesList();
+    }
+  });
 }
 
 Games.prototype.loadJSON = function (path, success, error) {
@@ -100,10 +108,6 @@ Games.prototype.unityFrameLoaded = function () {
   var messageToSend = {"type":"SetUnityGame", "loc": gamesCtrl.currGame.loc, "corsProxy":gamesCtrl.corsProxy };
   gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");//"https://openconsole-games.github.io");
 }
-Games.prototype.customFrameLoaded = function () {
-  var messageToSend = {"type":"SetGame", "settings": gamesCtrl.currGame.settings };
-  gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");;
-}
 
 Games.prototype.setGameFrame = function (gameObj) {
   gamesCtrl.currGame = gameObj;
@@ -129,11 +133,6 @@ Games.prototype.setGameFrame = function (gameObj) {
       gamesCtrl.gamesIFrame.src = gamesCtrl.unityLoaderLoc;
       gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.unityFrameLoaded );
       break;
-    case "custom":
-      // Load custom frame
-      gamesCtrl.gamesIFrame.src = gameObj.settings.custom.loaderLoc;
-      gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.customFrameLoaded );
-      break;
   }
 }
 
@@ -152,6 +151,15 @@ Games.prototype.getGamePath = function (gameSettings, currLocation) {
 }
 Games.prototype.setGame = function (gameName) {
   // Used EXTERNALLY
+  if(gamesCtrl.currGame != null){
+    var messageToSend = {"type":"LeaveGame", "gameName":gameName };
+    gamesCtrl.gamesIFrame.contentWindow.postMessage(messageToSend, "*");
+  }
+  else {
+    gamesCtrl.validSetGame(gameName);
+  }
+}
+Games.prototype.validSetGame = function (gameName) {
   if(gamesCtrl.gamesList == null || gamesCtrl.gamesList[gameName] == null) {
     console.error(gamesCtrl.gamesList);
     console.error("Unknown game! " + gameName);
@@ -206,16 +214,25 @@ Games.prototype.loadDefaultGamesList = function() {
   gamesCtrl.loadGamesList('https://openconsole-games.github.io/Games/gamesList.json', true);
   setTimeout(gamesCtrl.loadDefaultGamesList, 5000);
 }
+Games.prototype.loadLocalGamesList = function() {
+  gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json', true);
+}
+Games.prototype.loadACGamesList = function() {
+  gamesCtrl.loadGamesList('http://openconsole-ac.github.io/Games/gamesList.json', true);
+}
 
   
 Games.prototype.handleMessageFromGame = function (event) {
   var message = event.data;
   switch(message.type) {
     case "SetGame":
-      gamesCtrl.setGame(message.game.name);
+      gamesCtrl.validSetGame(message.game.name);
       break;
     case "Custom":
       consoleNet.sendCustomMessage(message);
+      break;
+    case "ConfirmLeaveGame":
+      gamesCtrl.validSetGame(message.gameName);
       break;
   }
 }

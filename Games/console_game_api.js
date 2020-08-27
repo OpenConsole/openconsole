@@ -226,6 +226,10 @@ GameControl.prototype.receiveMessage = function (event) {
     case "SimulateBtn":
       gCtrl.simulateButton(message.buttonData, message.upDown, message.pressId);
       break;
+    case "LeaveGame":
+			message.type = "ConfirmLeaveGame";
+			parent.postMessage(message, "*");
+      break;
   }
 }
 
