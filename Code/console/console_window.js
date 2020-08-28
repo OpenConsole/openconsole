@@ -319,8 +319,11 @@ Games.prototype.sendCustomMessage = function(id, message) {
 }
 Games.prototype.sendPlayersToGame = function(conns) {
   // Used EXTERNALLY
-  gamesCtrl.players = conns.map(conn => {"name":conn.metadata.name,"id":conn.id});
+  gamesCtrl.players = conns.map(gamesCtrl.connToPlayer);
   gamesCtrl.sendPlayerInfo(gamesCtrl.players);
+}
+Games.prototype.connToPlayer = function(conn) {
+  return {"name":conn.metadata.name,"id":conn.id};
 }
 Games.prototype.sendPlayerInfo = function(players) {
   if(gamesCtrl.gamesIFrame == null) return;
