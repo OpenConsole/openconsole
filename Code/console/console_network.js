@@ -276,10 +276,11 @@ Network.prototype.setContollerGameAll = function() {
 }
 Network.prototype.sendCustomMessage = function (message) {
   // Used EXTERNALLY
-  if (message.to !== undefined) {
-	if (message.to <= consoleNet.conns.length) {
-	  consoleNet.signal(consoleNet.conns[message.to - 1], JSON.stringify(message));
-	}
+  if (message.to != null) {
+    var conn_to = consoleNet.conns.find(conn => conn.id == message.to);
+    if (conn_to != null) {
+	    consoleNet.signal(conn_to, JSON.stringify(message));
+    }
   } else {
     consoleNet.conns.forEach(conn => consoleNet.signal(conn, JSON.stringify(message)));
   }
