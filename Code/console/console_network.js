@@ -146,11 +146,11 @@ Network.prototype.createPeer = function() {
   });
   conn.on('close', function () {
     console.log("Disconnected " + conn.peer);
-    consoleNet.conns = consoleNet.conns.filter(function(c) { return c !== conn });
+    consoleNet.conns = consoleNet.conns.filter(c => c !== conn);
     var maxPlayers = gamesCtrl.getMaxPlayers();
     if(conn.id != null && maxPlayers != null) {
-      if(consoleNet.conns.length >= maxPlayers && conn.id < maxPlayers) {
-        var connToChange = consoleNet.conns.filter(function(c) { return c.id >= maxPlayers; })[0];
+      var connToChange = consoleNet.conns.find(c => c.id >= maxPlayers && c.id > conn.id);
+      if(connToChange != null) {
         connToChange.id = conn.id;
         consoleNet.setControllerLayout(connToChange);
       }
@@ -168,7 +168,7 @@ Network.prototype.createPeer = function() {
 }
 Network.prototype.getMinimalId = function (initialMinId) {
   var newId = initialMinId || 0;
-  while(consoleNet.conns.filter(function (oC) { return (oC.id == newId);}).length > 0) {
+  while(consoleNet.conns.filter(conn => conn.id == newId).length > 0) {
     newId += 1;
   }
   return newId;
