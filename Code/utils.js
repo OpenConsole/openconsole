@@ -51,7 +51,7 @@ function closeFullscreen() {
   }
 }
 
-/* Close fullscreen */
+/* Toggle fullscreen */
 function toggleFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen().then(e => { doneScreenChange(); }).catch(e => { openFullscreen(); });

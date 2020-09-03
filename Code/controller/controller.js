@@ -204,6 +204,9 @@ MetaController.prototype.handleInGameButton = function (input) {
     case 'esc':
       metaCtrl.setMode(modes.CONTROLLER);
       return 1;
+    case 'fullscreen':
+		  toggleFullscreen();
+      return 1;
     case 'null':
       return 1;
     default:
