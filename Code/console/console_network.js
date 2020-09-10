@@ -155,9 +155,11 @@ Network.prototype.createPeer = function() {
         var tempId = connToChange.id;
         connToChange.id = oldConnId;
         oldConnId = tempId;
+        if (connToChange.id < maxPlayers) {
+          consoleNet.setControllerLayout(connToChange);
+        }
         var connToChange = consoleNet.conns.find(c => c.id >= maxPlayers && c.id > oldConnId);
       }
-      consoleNet.setControllerLayout(connToChange);
     }
     consoleNet.showConnections();
     consoleNet.sendConnsToGame();
