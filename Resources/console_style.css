@@ -1,13 +1,14 @@
 body {
-	overflow	: hidden;
-	padding		: 0;
-	margin		: 0;
-    background-color: #172836;
+  overflow  : hidden;
+  padding   : 0;
+  margin    : 0;
+  background-color: #172836;
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
 }
 
 #header {
-    position: relative; top: 0; left: 0; right: 0;
-    display: flex; flex-wrap: nowrap; align-items: center;
+  position: relative; top: 0; left: 0; right: 0;
+  display: flex; flex-wrap: nowrap; align-items: center;
 }
 .header-height {
   height: 10vh;
@@ -25,11 +26,11 @@ img.logo, #internet-lost {
   margin: 0 10px;
 }
 img.hiddenImage {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 img.fullscreen {
-    position: absolute; right: 0;
+  position: absolute; right: 0;
 }
 
 #receiver-id {
@@ -39,12 +40,12 @@ img.fullscreen {
 }
 
 #gameTitle {
-    color: white;
-    position: absolute;
-    font-size: 8px;
-    left: 0px; top: 17px; width: 110px;
-    text-align: right;
-    white-space: nowrap;
+  color: white;
+  position: absolute;
+  font-size: 8px;
+  left: 0px; top: 17px; width: 110px;
+  text-align: right;
+  white-space: nowrap;
 }
 @media screen and (min-height: 300px) {
   #gameTitle {
@@ -60,11 +61,11 @@ img.fullscreen {
 }
 
 div.status {
-    color: white;
-    padding-left: 5px;
-    font-size: 27px; font-weight: bold;
-    align-self: center;
-    padding-bottom: 4px;
+  color: white;
+  padding-left: 5px;
+  font-size: 27px; font-weight: bold;
+  align-self: center;
+  padding-bottom: 4px;
 }
 @media screen and (min-height: 300px) {
   div.status, #receiver-id {
@@ -77,22 +78,22 @@ div.status {
   }
 }
 #status {
-    flex-shrink: 0;
+  flex-shrink: 0;
 }
 #playerList {
-    flex-shrink: 0;
-    padding-left: 10px;
+  flex-shrink: 0;
+  padding-left: 10px;
 }
 
 #debug {
-    position: absolute; top: 60px; left: 0; right: 0; bottom: 0;
-    pointer-events: none;
+  position: absolute; top: 60px; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
 }
 
 #game {
-    border: 0; margin: 0; padding: 0;
-    position: absolute; top: 30px; left: 0; width: 100%;
-    display: flex; align-items: center; justify-content: center;
+  border: 0; margin: 0; padding: 0;
+  position: absolute; top: 30px; left: 0; width: 100%;
+  display: flex; align-items: center; justify-content: center;
 }
 @media screen and (min-height: 300px) {
   #game {
@@ -105,25 +106,25 @@ div.status {
   }
 }
 
-#webgl-content {
-    z-index: 1;
-	overflow:hidden;
+#webgl-content  {
+  z-index:  1;
+  overflow:hidden;
 }
 
-.shade-bg {
- background-color:#2e506b
+.shade-bg  {
+  background-color:#2e506b
 }
-#id-icon {
- align-self: center;
- margin: 0 10px;
- max-height: 24px; height: 70%;
+#id-icon  {
+  align-self:  center;
+  margin:  0  10px;
+  max-height:  24px;  height:  70%;
 }
-.code-code-container {
- box-sizing:border-box;
- display:flex;
- justify-content:space-evenly;
- flex-wrap:nowrap;
- color: white;
- min-width: 120px; padding-right: 10px;
- height: 80%; flex-shrink: 0;
+.code-code-container  {
+  box-sizing:border-box;
+  display:flex;
+  justify-content:space-evenly;
+  flex-wrap:nowrap;
+  color:  white;
+  min-width:  120px;  padding-right:  10px;
+  height:  80%;  flex-shrink:  0;
 }
