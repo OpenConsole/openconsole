@@ -1,4 +1,4 @@
-*: not(input) {
+* :not(input) {
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
