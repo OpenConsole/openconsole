@@ -1,11 +1,11 @@
 @-ms-viewport {
- width:100vw;
- min-zoom:100%;
- zoom:100%
+  width: 100vw;
+  min-zoom: 100%;
+  zoom: 100%
 }
 @-ms-viewport {
- user-zoom:fixed;
- min-zoom:100%
+  user-zoom: fixed;
+  min-zoom: 100%
 }
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
@@ -14,16 +14,16 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 input[type=number] {
-  -moz-appearance:textfield;
+  -moz-appearance: textfield;
 }
 body {
-  -moz-user-select:none;
-  -webkit-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
-	overflow	: hidden;
-	padding		: 0;
-	margin		: 0;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
   background-color: #172836;
   font-family: 'Myriad Pro Regular';
   font-size: 4vmin;
@@ -46,10 +46,10 @@ body {
 }
 
 .page {
- position:absolute;
- left:0; top:0; bottom:0; right:0;
- overflow:hidden;
- background-color: #172836;
+  position: absolute;
+  left: 0; top: 0; bottom: 0; right: 0;
+  overflow: hidden;
+  background-color: #172836;
 }
 #game_creator {
   display: flex;
@@ -74,9 +74,9 @@ body {
   line-height: calc(5vw - 8px);
 
   border: none;
-  border-bottom-style:solid;
-  border-bottom-width:3px;
-  border-bottom-color:#172836;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #172836;
 }
 .window-button.active {
   background-color: #223b4f;
@@ -205,7 +205,7 @@ body {
 .flipped {
   display: flex;
   width: 100%;
-  transform:rotateX(180deg);
+  transform: rotateX(180deg);
 }
 .player-count-num {
   min-width: 3.2vw;
@@ -340,26 +340,26 @@ body {
 
 
 .punch {
- color:#1eaed3
+  color: #1eaed3
 }
 .punch-bg {
- background-color:#1eaed3
+  background-color: #1eaed3
 }
 .punch-border {
- border-color:#1eaed3
+  border-color: #1eaed3
 }
 .dark-border {
- border-color:#172836
+  border-color: #172836
 }
 .shade-bg {
- background-color:#2e506b
+  background-color: #2e506b
 }
 .shade-text {
- color:#777
+  color: #777
 }
 .dark-shade-bg {
- background-color:#223b4f
+  background-color: #223b4f
 }
 .dark-bg {
- background-color:#172836
+  background-color: #172836
 }
