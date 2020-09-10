@@ -30,7 +30,7 @@ MetaConsole.prototype.getHeaderHeight = function() {
   return Math.max(Math.min(0.1*window.innerHeight, 60), 30);
 }
 MetaConsole.prototype.getHeaderTextSize = function() {
-  return Math.max(Math.min(0.09*window.innerHeight, 50), 27);
+  return Math.max(Math.min(0.08*window.innerHeight, 45.5), 24);
 }
 
 MetaConsole.prototype.displayPlayers = function (conns) {

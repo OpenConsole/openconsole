@@ -36,7 +36,7 @@ img.fullscreen {
 #receiver-id {
   flex-shrink: 0;
   align-self: center;
-  font-size: 27px; font-weight: bold;
+  font-size: 24px; font-weight: bold;
 }
 
 #gameTitle {
@@ -63,18 +63,17 @@ img.fullscreen {
 div.status {
   color: white;
   padding-left: 5px;
-  font-size: 27px; font-weight: bold;
+  font-size: 24px; font-weight: bold;
   align-self: center;
-  padding-bottom: 4px;
 }
 @media screen and (min-height: 300px) {
   div.status, #receiver-id {
-    font-size: 9vh;
+    font-size: 8vh;
   }
 }
 @media screen and (min-height: 555px) {
   div.status, #receiver-id {
-    font-size: 50px;
+    font-size: 44.5px;
   }
 }
 #status {
