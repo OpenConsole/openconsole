@@ -16,6 +16,7 @@ function MetaController() {
   this.controller = document.getElementById("controller_containter");
   this.menu = document.getElementById("menu");
   this.connectScreenTop = document.getElementById("connect-logo");
+  this.playernameinfo = document.getElementById("player-name-info");
 
   window.addEventListener('resize', this.checkOrentation);
   window.addEventListener('orientationchange', this.checkOrentation);
@@ -127,6 +128,10 @@ MetaController.prototype.connected = function() {
   // Used EXTERNALLY
   metaCtrl.setMode(modes.CONTROLLER);
   metaCtrl.disableInput = false;
+  metaCtrl.setPlayerNameInfo();
+}
+MetaController.prototype.setPlayerNameInfo = function() {
+  metaCtrl.playernameinfo.innerHTML = player.name;
 }
 
 MetaController.prototype.setIdText = function (idText) {
