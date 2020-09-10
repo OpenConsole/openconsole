@@ -151,7 +151,7 @@ body {
   transition-timing-function: ease-in;
 }
 .name-code-container {
-  width: 240px;
+  width: 246px;
   margin-right: 10px;
   padding: .3em .2em;
   font-size: 1.65em;
@@ -172,6 +172,22 @@ body {
   top: 2px;
   align-self: center;
 }
+#code-code {
+  display: inline-block;
+  width: 200px;
+  text-align: right;
+}
+#name-code {
+  display: inline-block;
+  width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: right;
+  vertical-align: bottom;
+}
+
 .code-pad-del,
 .code-pad-ok {
   background-repeat: no-repeat;
@@ -183,11 +199,6 @@ body {
 }
 .code-pad-ok {
   background-image: url('code-tick.png')
-}
-#code-code {
-  display: inline-block;
-  width: 200px;
-  text-align: right;
 }
 .code-code-instructions {
   margin-right: 10px;
@@ -227,12 +238,6 @@ body {
 }
 .keyboard-key-label.punch-bg {
   translate: 0 3px;
-}
-.openconsole-keyboard-key-label-active {
-  background-color: #2669a6;
-  position: relative;
-  top: 3px;
-  border-bottom: 0 solid rgba(0,0,0,0)
 }
 .keyboard-key {
   display: inline-block;
