@@ -17,6 +17,15 @@ function MetaController() {
   this.menu = document.getElementById("menu");
   this.connectScreenTop = document.getElementById("connect-logo");
   this.playernameinfo = document.getElementById("player-name-info");
+  this.connecttbody = document.getElementById("connect-tbody");
+  this.playernameinfo = document.getElementById("player-name-info");
+  this.connecttbody = document.getElementById("connect-tbody");
+  this.kBasic = document.getElementById("keyboard-basic");
+  this.kNumber = document.getElementById("keyboard-number");
+  this.kMath = document.getElementById("keyboard-math");
+  this.kSpecial = document.getElementById("keyboard-special");
+  this.inCodeInMode = true;
+  this.shiftEnabled = true;
 
   window.addEventListener('resize', this.checkOrentation);
   window.addEventListener('orientationchange', this.checkOrentation);
@@ -34,6 +43,12 @@ function MetaController() {
 MetaController.prototype.initialize = function() {
   metaCtrl.setMode(modes.CONNECT);
   metaCtrl.checkOrentation();
+  var keyboards = document.getElementsByClassName("keyboard-key-label");
+  for (var i = 0; i < keyboards.length; i++) {
+    keyboards[i].addEventListener("touchstart", metaCtrl.handleKeyboard);
+    keyboards[i].addEventListener("mousedown", metaCtrl.handleKeyboard);
+  }
+  metaCtrl.toggleCaps();
 }
 
 MetaController.prototype.preloadImages = function() {
@@ -83,7 +98,7 @@ MetaController.prototype.checkOrentation = function(mode) {
     }, 0);
     return;
   }
-  if (height < 280) {
+  if (height < 280 && metaCtrl.inCodeInMode) {
     metaCtrl.connectScreenTop.style.display = 'none';
   } else {
     metaCtrl.connectScreenTop.style.display = 'flex';
@@ -134,6 +149,15 @@ MetaController.prototype.setPlayerNameInfo = function() {
   metaCtrl.playernameinfo.innerHTML = player.name;
 }
 
+MetaController.prototype.switchToNameIn = function() {
+  metaCtrl.connecttbody.classList.add("namein");
+  metaCtrl.inCodeInMode = false;
+}
+MetaController.prototype.switchToCodeIn = function() {
+  metaCtrl.connecttbody.classList.remove("namein");
+  metaCtrl.inCodeInMode = true;
+}
+
 MetaController.prototype.setIdText = function (idText) {
   // Used EXTERNALLY
   var currIdFormat = "";
@@ -148,6 +172,132 @@ MetaController.prototype.setIdText = function (idText) {
   }
 }
 
+MetaController.prototype.toggleCaps = function () {
+  var keyboards = document.getElementsByClassName("keyboard-key-label");
+  for (var i = 0; i < keyboards.length; i++) {
+    if (keyboards[i].classList.contains("keyboard-shift")) {
+      keyboards[i].classList.toggle("shade-bg");
+      keyboards[i].classList.toggle("punch-bg");
+    }
+    var keyText = keyboards[i].textContent;
+    if (keyText.length > 1 || keyText == "ß") continue;
+    if (metaCtrl.shiftEnabled)
+      keyboards[i].textContent = keyText.toUpperCase();
+    else
+      keyboards[i].textContent = keyText.toLowerCase();
+  }
+}
+MetaController.prototype.setKeyboardLayout = function (layout) {
+  var newLayout = "";
+  switch (layout) {
+    case "#123":
+      if (metaCtrl.kNumber.style.display == "none") {
+        newLayout = "number";
+      }
+      else {
+        newLayout = "basic";
+      }
+      break;
+    case "{[°€":
+      if (metaCtrl.kMath.style.display == "none") {
+        newLayout = "math";
+      }
+      else {
+        newLayout = "basic";
+      }
+      break;
+    case "äéø":
+      if (metaCtrl.kSpecial.style.display == "none") {
+        newLayout = "special";
+      }
+      else {
+        newLayout = "basic";
+      }
+      break;
+  }
+  metaCtrl.kBasic.style.display = "none";
+  metaCtrl.kNumber.style.display = "none";
+  metaCtrl.kMath.style.display = "none";
+  metaCtrl.kSpecial.style.display = "none";
+  switch (newLayout) {
+    case "basic":
+      metaCtrl.kBasic.style.display = "inline-block";
+      break;
+    case "number":
+      metaCtrl.kNumber.style.display = "inline-block";
+      break;
+    case "math":
+      metaCtrl.kMath.style.display = "inline-block";
+      break;
+    case "special":
+      metaCtrl.kSpecial.style.display = "inline-block";
+      break;
+  }
+}
+MetaController.prototype.handleKeyboard = function (e) {
+  var btn = this;
+  var action = "";
+  if (btn.classList.contains("keyboard-backspace")) {
+    action = "Backspace";
+  } else if (btn.classList.contains("keyboard-shift")) {
+    action = "Shift";
+  } else {
+    action = btn.innerText;
+  }
+
+  if (action == "Shift") {
+    metaCtrl.shiftEnabled = !metaCtrl.shiftEnabled;
+    metaCtrl.toggleCaps();
+  }
+  else if (btn.classList.contains("shade-bg") && action != "#123") {
+    btn.classList.remove("shade-bg");
+    btn.classList.add("punch-bg");
+    var disableHighlight = function() {
+      btn.classList.remove("punch-bg");
+      btn.classList.add("shade-bg");
+      btn.removeEventListener("touchend", disableHighlight);
+      btn.removeEventListener("mouseup", disableHighlight);
+    };
+    btn.addEventListener("touchend", disableHighlight);
+    btn.addEventListener("mouseup", disableHighlight);
+    window.setTimeout(disableHighlight, 500);
+  }
+
+  if (action.length == 1) {
+    if (metaCtrl.shiftEnabled && !/\s/.test(action)) {
+      metaCtrl.shiftEnabled = false;
+      metaCtrl.toggleCaps();
+    }
+    if (!metaCtrl.shiftEnabled && /\s/.test(action)) {
+      metaCtrl.shiftEnabled = true;
+      metaCtrl.toggleCaps();
+    }
+    var name = player.getRealName();
+    player.updatePlayerName(name + action);
+  }
+  else {
+    switch (action) {
+      case "Backspace":
+        var name = player.getRealName();
+        if (name.length == 1 && !metaCtrl.shiftEnabled) {
+          metaCtrl.shiftEnabled = true;
+          metaCtrl.toggleCaps();
+        }
+        name = name.substring(0, name.length - 1);
+        player.updatePlayerName(name);
+        break;
+      case "Done":
+        metaCtrl.switchToCodeIn();
+        break;
+      case "#123":
+      case "{[°€":
+      case "äéø":
+        metaCtrl.setKeyboardLayout(action);
+        break;
+    }
+    console.log(action);
+  }
+}
 MetaController.prototype.handleButton = function (btn, input, evnt) {
   // Used EXTERNALLY
   console.log(input);
@@ -156,10 +306,15 @@ MetaController.prototype.handleButton = function (btn, input, evnt) {
   if (btn && btn.classList.contains("shade-bg")) {
     btn.classList.remove("shade-bg");
     btn.classList.add("punch-bg");
-    window.setTimeout(function() {
+    var disableHighlight = function() {
       btn.classList.remove("punch-bg");
       btn.classList.add("shade-bg");
-      }, 100);
+      btn.removeEventListener("touchend", disableHighlight);
+      btn.removeEventListener("mouseup", disableHighlight);
+    };
+    btn.addEventListener("touchend", disableHighlight);
+    btn.addEventListener("mouseup", disableHighlight);
+    window.setTimeout(disableHighlight, 500);
   }
   if (metaCtrl.handleInGameButton(input)) return;
   
