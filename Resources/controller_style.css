@@ -73,7 +73,7 @@ body {
   translate: -270px 0;
 }
 .namein .code-code-container {
-  translate: 0 calc(-1.85em - 0.05vh);
+  translate: 0 calc(-2em - 0.05vh);
   padding: .3em .2em;
   font-size: 1.65em;
   margin: 0;
