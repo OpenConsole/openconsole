@@ -127,6 +127,10 @@ Network.prototype.disconnect = function() {
  * Sets up callbacks that handle any events related to the
  * connection and data received on it.
  */
+Network.prototype.isConnReady = function () {
+  // Used EXTERNALLY
+  return playerNet.peer != null && !playerNet.peer.disconnected;
+}
 Network.prototype.connect = function (id) {
   // Used EXTERNALLY
   if (id.length < 4)

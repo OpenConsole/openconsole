@@ -49,51 +49,51 @@ MetaController.prototype.preloadImages = function() {
 
 MetaController.prototype.disableAllScreens = function() {
   metaCtrl.rotate.style.display = 'none';
-	metaCtrl.connect.style.display = 'none';
-	metaCtrl.controller.style.display = 'none';
-	metaCtrl.menu.style.display = 'none';
+  metaCtrl.connect.style.display = 'none';
+  metaCtrl.controller.style.display = 'none';
+  metaCtrl.menu.style.display = 'none';
 }
 MetaController.prototype.setMode = function(mode) {
   metaCtrl.lastMode = metaCtrl.currMode;
   metaCtrl.currMode = mode;
-	metaCtrl.disableAllScreens();
+  metaCtrl.disableAllScreens();
   switch (mode) {
-	  case modes.ROTATE:
-	    metaCtrl.rotate.style.display = 'block';
-	    break;
-	  case modes.CONNECT:
-	    metaCtrl.connect.style.display = 'block';
-	    break;
-	  case modes.CONTROLLER:
-	    metaCtrl.controller.style.display = 'block';
-	    break;
-	  case modes.MENU:
-	    metaCtrl.menu.style.display = 'block';
-	    break;
-	  default:
-	}
+    case modes.ROTATE:
+      metaCtrl.rotate.style.display = 'block';
+      break;
+    case modes.CONNECT:
+      metaCtrl.connect.style.display = 'block';
+      break;
+    case modes.CONTROLLER:
+      metaCtrl.controller.style.display = 'block';
+      break;
+    case modes.MENU:
+      metaCtrl.menu.style.display = 'block';
+      break;
+    default:
+  }
 }
 
 MetaController.prototype.checkOrentation = function(mode) {
   var width = window.innerWidth, height = window.innerHeight;
-	if (width == null || height == null) {
+  if (width == null || height == null) {
     window.setTimeout(function() {
         metaCtrl.checkOrentation();
     }, 0);
     return;
   }
-	if (height < 280) {
-	  metaCtrl.connectScreenTop.style.display = 'none';
-	} else {
-		metaCtrl.connectScreenTop.style.display = 'flex';  
-	}
-	if (height > width) {
-	  if (metaCtrl.currMode != modes.ROTATE) {
-		  metaCtrl.setMode(modes.ROTATE);
-		}
-	} else {
-	  if (metaCtrl.currMode == modes.ROTATE) {
-		  metaCtrl.setMode(metaCtrl.lastMode);
+  if (height < 280) {
+    metaCtrl.connectScreenTop.style.display = 'none';
+  } else {
+    metaCtrl.connectScreenTop.style.display = 'flex';
+  }
+  if (height > width) {
+    if (metaCtrl.currMode != modes.ROTATE) {
+      metaCtrl.setMode(modes.ROTATE);
+    }
+  } else {
+    if (metaCtrl.currMode == modes.ROTATE) {
+      metaCtrl.setMode(metaCtrl.lastMode);
     }
   }
 }
@@ -116,77 +116,78 @@ MetaController.prototype.setText = function(elem, newText) {
 MetaController.prototype.invalidId = function() {
   // Used EXTERNALLY
   metaCtrl.setPlaceholder(metaCtrl.idField, "Invalid code");
-	metaCtrl.enableConnect();
+  metaCtrl.enableConnect();
 }
 MetaController.prototype.enableConnect = function() {
   // Used EXTERNALLY
-	metaCtrl.setMode(modes.CONNECT);
-	metaCtrl.disableInput = false;
+  metaCtrl.setMode(modes.CONNECT);
+  metaCtrl.disableInput = false;
 }
 MetaController.prototype.connected = function() {
   // Used EXTERNALLY
-	metaCtrl.setMode(modes.CONTROLLER);
-	metaCtrl.disableInput = false;
+  metaCtrl.setMode(modes.CONTROLLER);
+  metaCtrl.disableInput = false;
 }
 
 MetaController.prototype.setIdText = function (idText) {
   // Used EXTERNALLY
-	var currIdFormat = "";
-	for (var i = 0; i < idText.length; i++) {
-	  if (i != 0 && (idText.length - i) % 3 == 0) (currIdFormat += " ");
-	  currIdFormat += idText[i];
-	}
-	if (idText.length != 0) {
-	  metaCtrl.setText(metaCtrl.idField, currIdFormat);
-	} else {
-	  metaCtrl.setPlaceholder(metaCtrl.idField, "Enter the code");
-	}
+  var currIdFormat = "";
+  for (var i = 0; i < idText.length; i++) {
+    if (i != 0 && (idText.length - i) % 3 == 0) (currIdFormat += " ");
+    currIdFormat += idText[i];
+  }
+  if (idText.length != 0) {
+    metaCtrl.setText(metaCtrl.idField, currIdFormat);
+  } else {
+    metaCtrl.setPlaceholder(metaCtrl.idField, "Enter the code");
+  }
 }
 
 MetaController.prototype.handleButton = function (btn, input, evnt) {
   // Used EXTERNALLY
-	console.log(input);
+  console.log(input);
   if (evnt) evnt.preventDefault();
-	if (metaCtrl.disableInput) return;
+  if (metaCtrl.disableInput) return;
   if (btn && btn.classList.contains("shade-bg")) {
-	  btn.classList.remove("shade-bg");
-	  btn.classList.add("punch-bg");
-	  window.setTimeout(function() {
-	    btn.classList.remove("punch-bg");
-	    btn.classList.add("shade-bg");
+    btn.classList.remove("shade-bg");
+    btn.classList.add("punch-bg");
+    window.setTimeout(function() {
+      btn.classList.remove("punch-bg");
+      btn.classList.add("shade-bg");
       }, 100);
-	}
+  }
   if (metaCtrl.handleInGameButton(input)) return;
   
   var currId = "";
   if(!metaCtrl.idField.classList.contains("code-code-instructions")) {
       currId = metaCtrl.idField.innerHTML.replace(/[^0-9]/g, "");
-	}
-	if (input == "enter") {
-	  metaCtrl.disableInput = true;
-	  var success = playerNet.connect(currId);
-	  if (success == 0) {
-		  metaCtrl.invalidId();
-	  } else {
+  }
+  if (input == "enter") {
+    if (!playerNet.isConnReady()) return;
+    metaCtrl.disableInput = true;
+    var success = playerNet.connect(currId);
+    if (success == 0) {
+      metaCtrl.invalidId();
+    } else {
       player.updateLastId(currId);
-	    // TODO
-		  openFullscreen();
-	  }
-	  return;
-	}
-	if (input == "del") {
-	  if (currId.length > 1 && !metaCtrl.lastDeleted) {
-		  currId = currId.substr(0, currId.length - 1)
-	  } else {
-		  currId = "";
+      // TODO
+      openFullscreen();
+    }
+    return;
+  }
+  if (input == "del") {
+    if (currId.length > 1 && !metaCtrl.lastDeleted) {
+      currId = currId.substr(0, currId.length - 1)
+    } else {
+      currId = "";
       player.updateLastId(currId);
-	  }
-	  metaCtrl.lastDeleted = true;
-	} else {
-	  metaCtrl.lastDeleted = false;
-	  if(currId.length < 6) currId += input;
-	}
-	metaCtrl.setIdText(currId);
+    }
+    metaCtrl.lastDeleted = true;
+  } else {
+    metaCtrl.lastDeleted = false;
+    if(currId.length < 6) currId += input;
+  }
+  metaCtrl.setIdText(currId);
 }
 MetaController.prototype.handleInGameButton = function (input) {
   switch (input) {
@@ -205,7 +206,7 @@ MetaController.prototype.handleInGameButton = function (input) {
       metaCtrl.setMode(modes.CONTROLLER);
       return 1;
     case 'fullscreen':
-		  toggleFullscreen();
+      toggleFullscreen();
       return 1;
     case 'null':
       return 1;
