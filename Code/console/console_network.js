@@ -148,12 +148,16 @@ Network.prototype.createPeer = function() {
     console.log("Disconnected " + conn.peer);
     consoleNet.conns = consoleNet.conns.filter(c => c !== conn);
     var maxPlayers = gamesCtrl.getMaxPlayers();
-    if(conn.id != null && maxPlayers != null) {
-      var connToChange = consoleNet.conns.find(c => c.id >= maxPlayers && c.id > conn.id);
-      if(connToChange != null) {
-        connToChange.id = conn.id;
-        consoleNet.setControllerLayout(connToChange);
+    if (conn.id != null && maxPlayers != null) {
+      var oldConnId = conn.id;
+      var connToChange = consoleNet.conns.find(c => c.id >= maxPlayers && c.id > oldConnId);
+      while (connToChange != null) {
+        var tempId = connToChange.id;
+        connToChange.id = oldConnId;
+        oldConnId = tempId;
+        var connToChange = consoleNet.conns.find(c => c.id >= maxPlayers && c.id > oldConnId);
       }
+      consoleNet.setControllerLayout(connToChange);
     }
     consoleNet.showConnections();
     consoleNet.sendConnsToGame();
