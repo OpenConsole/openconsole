@@ -74,15 +74,15 @@ body {
   -webkit-transform: translateX(-270px);
 }
 .namein .code-code-container {
-  transform: translateY(calc(-2em - 0.05vh));
-  -webkit-transform: translateY(calc(-2em - 0.05vh));
+  transform: translateY(-112.8%);
+  -webkit-transform: translateY(-112.8%);
   padding: .3em .2em;
   font-size: 1.65em;
   margin: 0;
 }
 .namein #keyboard-div {
-  transform: translateY(-2.8em);
-  -webkit-transform: translateY(-2.8em);
+  transform: translateY(-3.1em);
+  -webkit-transform: translateY(-3.1em);
 }
 #keyboard-div {
   background-color: inherit;
