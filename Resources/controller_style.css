@@ -163,7 +163,6 @@ body {
   display: inline-block;
   text-align: center;
   position: relative;
-  font-weight: 100;
   transition: translate 0.5s, margin 0.5s, font-size 0.5s;
 }
 .code-code-connect-icon {
@@ -274,7 +273,6 @@ table.layout-table {
   text-align: inherit;
   white-space: inherit;
   line-height: inherit;
-  font-weight: inherit;
   font-size: inherit;
   font-style: inherit
 }
