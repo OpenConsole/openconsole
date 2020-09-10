@@ -51,5 +51,5 @@ body {
  background-color: #ccf400;
 }
 .button.disabled {
- visibility: hidden;
+ display: none;
 }
