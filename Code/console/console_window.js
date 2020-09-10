@@ -314,7 +314,7 @@ Games.prototype.simulateButton = function (keyId, playerId, upDown, pressId) {
 Games.prototype.sendCustomMessage = function(id, message) {
   // Used EXTERNALLY
   if(gamesCtrl.gamesIFrame == null) return;
-  message.from = id + 1;
+  message.from = id;
   gamesCtrl.gamesIFrame.contentWindow.postMessage(message, "*");
 }
 Games.prototype.sendPlayersToGame = function(conns) {
