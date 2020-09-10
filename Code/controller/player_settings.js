@@ -55,7 +55,7 @@ Player.prototype.updatePlayerName = function (newName) {
   else {
     if (/\s/.test(newName.charAt(0))) return; // First letter cannot be space
     if (newName.length >= 2 && !/\S/.test(newName.slice(-2))) return; // Last two letters cannot be spaces
-    if (newName.length >= 10) return;
+    if (newName.length > 12) return;
     player.name = newName;
     player.nameSet = true;
     metaCtrl.setText(playerNameInput, "&lrm;" + player.name + "&lrm;");
