@@ -70,21 +70,24 @@ body {
   opacity: 0;
 }
 .namein .name-code-container {
-  translate: -270px 0;
+  transform: translateX(-270px);
+  -webkit-transform: translateX(-270px);
 }
 .namein .code-code-container {
-  translate: 0 calc(-2em - 0.05vh);
+  transform: translateY(calc(-2em - 0.05vh));
+  -webkit-transform: translateY(calc(-2em - 0.05vh));
   padding: .3em .2em;
   font-size: 1.65em;
   margin: 0;
 }
 .namein #keyboard-div {
-  translate: 0 -2.8em;
+  transform: translateY(-2.8em);
+  -webkit-transform: translateY(-2.8em);
 }
 #keyboard-div {
   background-color: inherit;
   transition-timing-function: ease-in;
-  transition: translate 0.5s;
+  transition: transform 0.5s;
 }
 .namein #keypad {
   display: none;
@@ -163,7 +166,7 @@ body {
   display: inline-block;
   text-align: center;
   position: relative;
-  transition: translate 0.5s, margin 0.5s, font-size 0.5s;
+  transition: transform 0.5s, margin 0.5s, font-size 0.5s;
 }
 .code-code-connect-icon {
   margin: 0 4px 0 8px;
@@ -216,7 +219,8 @@ body {
   font-size: 1.6em
 }
 .code-pad.punch-bg {
-  translate: 0 5px;
+  transform: translateY(5px);
+  -webkit-transform: translateY(5px);
 }
 
 .keyboard-layout {
@@ -236,7 +240,8 @@ body {
   cursor: pointer
 }
 .keyboard-key-label.punch-bg {
-  translate: 0 3px;
+  transform: translateY(3px);
+  -webkit-transform: translateY(3px);
 }
 .keyboard-key {
   display: inline-block;
