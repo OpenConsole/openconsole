@@ -19,8 +19,7 @@ const defaultOptions = {
   key: "e",
   code: "KeyE",
   location: 0,
-  repeat: false,
-  locale: "en-US"
+  repeat: false
 }
 const minDownTime = 60;
 
@@ -69,9 +68,7 @@ GameControl.prototype.simulate = function (element, eventName, options) {
         oEvent = new KeyboardEvent(eventName, {bubbles : allOptions.bubbles, cancelable : allOptions.cancelable,
                                                ctrlKey : allOptions.ctrlKey, altKey : allOptions.altKey, shiftKey : allOptions.shiftKey, metaKey : allOptions.metaKey,
                                                code: allOptions.code, key : allOptions.key, keyCode: allOptions.keyCode, which: allOptions.keyCode,
-                                               location: allOptions.location, repeat: allOptions.repeat, charCode: allOptions.keyCode });
-        oEvent.locale = allOptions.locale;
-        oEvent.char = allOptions.key;
+                                               location: allOptions.location, repeat: allOptions.repeat, charCode: 0 });
         break;
     }
     oEvent.currentTarget = document.body;
@@ -100,7 +97,7 @@ GameControl.prototype.simulateKeyDown = function (keyCode, key, code) {
 }
 GameControl.prototype.simulateKeyUp = function (keyCode, key, code) {
   if(gCtrl.gameInstance == null) return;
-  gCtrl.simulate(gCtrl.gameInstance, "keypress", { keyCode: keyCode, key: key, code: code });
+  //gCtrl.simulate(gCtrl.gameInstance, "keypress", { keyCode: keyCode, key: key, code: code });
   gCtrl.simulate(gCtrl.gameInstance, "keyup", { keyCode: keyCode, key: key, code: code });
 }
 GameControl.prototype.simulateKey = function (keyCode, key, code) {
