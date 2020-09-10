@@ -232,6 +232,7 @@ Network.prototype.connectionCheck = function (conn) {
 }
 Network.prototype.checkTimeout = function() {
   consoleNet.conns.forEach(consoleNet.connectionCheck);
+  consoleNet.showConnections(); // TODO: why do connections sometimes disappear
 }
 
 /**
