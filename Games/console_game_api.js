@@ -69,7 +69,9 @@ GameControl.prototype.simulate = function (element, eventName, options) {
         oEvent = new KeyboardEvent(eventName, {bubbles : allOptions.bubbles, cancelable : allOptions.cancelable,
                                                ctrlKey : allOptions.ctrlKey, altKey : allOptions.altKey, shiftKey : allOptions.shiftKey, metaKey : allOptions.metaKey,
                                                code: allOptions.code, key : allOptions.key, keyCode: allOptions.keyCode, which: allOptions.keyCode,
-                                               location: allOptions.location, repeat: allOptions.repeat, locale: allOptions.locale, char: allOptions.key, charCode: allOptions.keyCode });
+                                               location: allOptions.location, repeat: allOptions.repeat, charCode: allOptions.keyCode });
+        oEvent.locale = allOptions.locale;
+        oEvent.char = allOptions.key;
         break;
     }
     oEvent.currentTarget = document.body;
