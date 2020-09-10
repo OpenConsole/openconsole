@@ -30,7 +30,7 @@ Player.prototype.initialize = function() {
   }
   var playerNameInput = document.getElementById("name-code");
   if (player.nameSet) {
-    metaCtrl.setText(playerNameInput, "&lrm;" + player.name);
+    metaCtrl.setText(playerNameInput, "&lrm;" + player.name + "&lrm;");
   }
   else {
 	  metaCtrl.setPlaceholder(playerNameInput, "e.g. " + player.name);
@@ -58,7 +58,7 @@ Player.prototype.updatePlayerName = function (newName) {
     if (newName.length >= 10) return;
     player.name = newName;
     player.nameSet = true;
-    metaCtrl.setText(playerNameInput, "&lrm;" + player.name);
+    metaCtrl.setText(playerNameInput, "&lrm;" + player.name + "&lrm;");
   }
   player.save();
 }
