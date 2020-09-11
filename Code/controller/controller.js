@@ -155,10 +155,10 @@ MetaController.prototype.setPlayerNameInfo = function() {
 
 MetaController.prototype.switchToNameIn = function() {
   metaCtrl.connecttbody.classList.add("namein");
-  var difference = -6;
+  var difference = -5;
   var readjust = function () {
     var newdifference = metaCtrl.codebox.getBoundingClientRect().top - metaCtrl.namebox.getBoundingClientRect().top;
-    if (newdifference > 1 || newdifference < -1) {
+    if (newdifference > 0.5 || newdifference < -0.5) {
       difference += newdifference;
       metaCtrl.codebox.style.transform = "translateY(-"+difference+"px)";
       metaCtrl.codebox.style.webkitTransform = "translateY(-"+difference+"px)";
