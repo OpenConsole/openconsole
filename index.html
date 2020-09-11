@@ -19,6 +19,7 @@
       <p style="font-size: 64px; color: white;">Open<span style="color: #13add0;">Console</span></p>
       <p style="font-size: 32px; color: white;"><a href="console.html">Console</a></p>
       <p style="font-size: 32px; color: white;"><a href="controller.html">Controller</a></p>
+      <p id="opening-text" style="font-size: 32px; color: white;"></p>
     </div>
     <script type="text/javascript" src="//wurfl.io/wurfl.js"></script>
     <script>
@@ -34,10 +35,32 @@
         window.addEventListener("mousedown", function(e) {
             console.log("Key: " + e.key + ", kCode: " + e.keyCode + ", code: " + e.code + ", which: " + e.which);
         });
-        if(WURFL.is_mobile === true) {
-            window.location.href = "/controller.html";
-        } else {
-            window.location.href = "/console.html";
+        var time = 3;
+        var reload = function () {
+          if (time == 0) {
+            if(WURFL.is_mobile === true) {
+                window.location.href = "/controller.html";
+            } else {
+                window.location.href = "/console.html";
+            }
+            return;
+          }
+          var openingText = "";
+          if(WURFL.is_mobile === true) {
+              openingText = "Controller";
+          } else {
+              openingText = "Console";
+          }
+          document.getElementById("opening-text").innerHTML = "Opening "+openingText+" in "+time+"s";
+          time--;
+          window.setTimeout(reload, 1000);
         }
+        reload();
+        window.onpageshow = function(event) {
+          if (event.persisted) {
+            time = 3;
+            reload();
+          }
+        };
     </script>
   </body>
