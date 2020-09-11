@@ -74,8 +74,6 @@ body {
   -webkit-transform: translateX(-270px);
 }
 .namein .code-code-container {
-  transform: translateY(-112.8%);
-  -webkit-transform: translateY(-112.8%);
   padding: .3em .2em;
   font-size: 1.65em;
   margin: 0;

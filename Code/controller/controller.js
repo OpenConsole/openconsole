@@ -20,6 +20,10 @@ function MetaController() {
   this.connecttbody = document.getElementById("connect-tbody");
   this.playernameinfo = document.getElementById("player-name-info");
   this.connecttbody = document.getElementById("connect-tbody");
+
+  this.codebox = document.getElementById("code-box");
+  this.namebox = document.getElementById("name-box");
+
   this.kBasic = document.getElementById("keyboard-basic");
   this.kNumber = document.getElementById("keyboard-number");
   this.kMath = document.getElementById("keyboard-math");
@@ -151,10 +155,23 @@ MetaController.prototype.setPlayerNameInfo = function() {
 
 MetaController.prototype.switchToNameIn = function() {
   metaCtrl.connecttbody.classList.add("namein");
+  var difference = -6;
+  var readjust = function () {
+    var newdifference = metaCtrl.codebox.getBoundingClientRect().top - metaCtrl.namebox.getBoundingClientRect().top;
+    if (newdifference > 1 || newdifference < -1) {
+      difference += newdifference;
+      metaCtrl.codebox.style.transform = "translateY(-"+difference+"px)";
+      metaCtrl.codebox.style.webkitTransform = "translateY(-"+difference+"px)";
+      setTimeout(readjust, 500);
+    }
+  }
+  readjust();
   metaCtrl.inCodeInMode = false;
 }
 MetaController.prototype.switchToCodeIn = function() {
   metaCtrl.connecttbody.classList.remove("namein");
+  metaCtrl.codebox.style.transform = "";
+  metaCtrl.codebox.style.webkitTransform = "";
   metaCtrl.inCodeInMode = true;
 }
 
