@@ -7,6 +7,17 @@
     <title>OpenConsole</title>
     <link rel="shortcut icon" href="Resources/favicon.ico">
     <link rel="manifest" href="manifest.webmanifest">
+    <script>
+      if ('serviceWorker' in navigator) {
+        console.log("Will the service worker register?");
+        navigator.serviceWorker.register('Code/service-worker.js')
+          .then(function(reg){
+            console.log("Yes, it did.");
+          }).catch(function(err) {
+            console.log("No it didn't. This happened: ", err)
+          });
+      }
+    </script>
   </head>
   <body style="background-color: #223b4f; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;">
     <div style="text-align: center;">
