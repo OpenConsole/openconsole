@@ -12,7 +12,7 @@ SubController.prototype.initialize = function() {
 
 SubController.prototype.setControllerLayout = function (keymap) {
   // Used EXTERNALLY
-  var messageToSend = {"type":"SetLayout", "keymap":keymap };
+  var messageToSend = { "type":"SetLayout", "keymap":keymap, "name":player.name };
   if (ctrlApi.controllerLoaded) {
     ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
   } else {
