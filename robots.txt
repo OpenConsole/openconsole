@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /controller.html
-Disallow: /console.html
-
-Sitemap: https://openconsole.github.io/sitemap.xml
