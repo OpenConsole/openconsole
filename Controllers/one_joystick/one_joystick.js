@@ -335,16 +335,16 @@ DPad.prototype.onMoveRelative = function(pos) {
       }
     }
   }
-  if (dx <= 0 && me.state[DPad.RIGHT]) {
+  if (dx <= 15 && me.state[DPad.RIGHT]) {
     me.setState(DPad.RIGHT, false);
   }
-  if (dx >= 0 && me.state[DPad.LEFT]) {
+  if (dx >= -15 && me.state[DPad.LEFT]) {
     me.setState(DPad.LEFT, false);
   }
-  if (dy <= 0 && me.state[DPad.DOWN]) {
+  if (dy <= 15 && me.state[DPad.DOWN]) {
     me.setState(DPad.DOWN, false);
   }
-  if (dy >= 0 && me.state[DPad.UP]) {
+  if (dy >= -15 && me.state[DPad.UP]) {
     me.setState(DPad.UP, false);
   }
   me.placeRelative(dx, dy);
