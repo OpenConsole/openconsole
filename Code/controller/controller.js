@@ -30,6 +30,8 @@ function MetaController() {
   this.kSpecial = document.getElementById("keyboard-special");
   this.inCodeInMode = true;
   this.shiftEnabled = true;
+  
+  this.isStandalone = false;
 
   window.addEventListener('resize', this.checkOrentation);
   window.addEventListener('orientationchange', this.checkOrentation);
@@ -53,6 +55,11 @@ MetaController.prototype.initialize = function() {
     keyboards[i].addEventListener("mousedown", metaCtrl.handleKeyboard);
   }
   metaCtrl.toggleCaps();
+  if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
+    // If running in app
+    document.getElementById("help-button-text").innerHTML = "Enable AC";
+    metaCtrl.isStandalone = true;
+  }
 }
 
 MetaController.prototype.preloadImages = function() {
@@ -383,7 +390,12 @@ MetaController.prototype.handleInGameButton = function (input) {
       metaCtrl.setMode(modes.CONTROLLER);
       return 1;
     case 'fullscreen':
-      toggleFullscreen();
+      if (metaCtrl.isStandalone) {
+        playerNet.sendControlMessage({"command":"loadAcList"});
+      }
+      else {
+        toggleFullscreen();
+      }
       return 1;
     case 'null':
       return 1;

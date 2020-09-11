@@ -222,6 +222,7 @@ Games.prototype.loadLocalGamesList = function() {
   gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json', true);
 }
 Games.prototype.loadACGamesList = function() {
+  // Used EXTERNALLY
   gamesCtrl.loadGamesList('https://openconsole-ac.github.io/Games/gamesList.json', true);
 }
 

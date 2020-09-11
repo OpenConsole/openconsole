@@ -89,6 +89,12 @@ Network.prototype.sendKey = function (keyPress) {
 }
 Network.prototype.sendCustomMessage = function (message) {
   // Used EXTERNALLY
+  message.type = "Custom";
+  playerNet.signal(JSON.stringify(message));
+}
+Network.prototype.sendControlMessage = function (message) {
+  // Used EXTERNALLY
+  message.type = "Control";
   playerNet.signal(JSON.stringify(message));
 }
 Network.prototype.quitGame = function() {

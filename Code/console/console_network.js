@@ -197,11 +197,21 @@ Network.prototype.handleMessage = function (conn, message) {
     case 'Pong':
       conn.isActive = 3;
       break;
+    case 'Control':
+      consoleNet.handleControlMessage(conn, message);
+      break;
     case 'Custom':
       gamesCtrl.sendCustomMessage(conn.id, message);
       break;
     default:
       console.log("Received unknown! " + message);
+      break;
+  }
+}
+Network.prototype.handleControlMessage = function (conn, message) {
+  switch (message.command) {
+    case "loadAcList":
+      gamesCtrl.loadACGamesList();
       break;
   }
 }
