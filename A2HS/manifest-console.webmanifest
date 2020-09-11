@@ -12,6 +12,6 @@
   ],
   "name": "OpenConsole",
   "short_name": "OpenConsole",
-  "start_url": "/console.html",
+  "start_url": "/console.html?mode=standalone",
   "orientation": "landscape"
 }
