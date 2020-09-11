@@ -1,13 +1,14 @@
 {
   "background_color": "#172836",
-  "theme_color": "#172836",
+  "theme_color": "#1eaed3",
   "description": "Allows controlling HTML5 games from remote device.",
   "display": "fullscreen",
   "icons": [
     {
-      "src": "Resources/logo_d_192.png",
+      "src": "/A2HS/logo_l_192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "name": "OpenConsole",
