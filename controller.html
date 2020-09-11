@@ -7,6 +7,11 @@
     <link rel="shortcut icon" href="Resources/favicon.ico">
     <link rel="stylesheet" href="Resources/controller_style.css">
     <link rel="manifest" href="manifest.webmanifest">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('Code/service-worker.js').then(function(reg){}).catch(function(err) {});
+      }
+    </script>
   </head>
 <body class="page">
   <div class="message page" id="message"></div>

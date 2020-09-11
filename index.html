@@ -9,13 +9,7 @@
     <link rel="manifest" href="manifest.webmanifest">
     <script>
       if ('serviceWorker' in navigator) {
-        console.log("Will the service worker register?");
-        navigator.serviceWorker.register('Code/service-worker.js')
-          .then(function(reg){
-            console.log("Yes, it did.");
-          }).catch(function(err) {
-            console.log("No it didn't. This happened: ", err)
-          });
+        navigator.serviceWorker.register('Code/service-worker.js').then(function(reg){}).catch(function(err) {});
       }
     </script>
   </head>
