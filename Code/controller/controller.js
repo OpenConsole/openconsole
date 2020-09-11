@@ -55,6 +55,9 @@ MetaController.prototype.initialize = function() {
     keyboards[i].addEventListener("mousedown", metaCtrl.handleKeyboard);
   }
   metaCtrl.toggleCaps();
+  metaCtrl.checkStandalone();
+}
+MetaController.prototype.checkStandalone = function() {
   if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
     // If running in app
     document.getElementById("help-button-text").innerHTML = "Enable AC";
@@ -354,6 +357,7 @@ MetaController.prototype.handleButton = function (btn, input, evnt) {
       metaCtrl.invalidId();
     } else {
       player.updateLastId(currId);
+      metaCtrl.checkStandalone();
       // TODO
       openFullscreen();
     }
