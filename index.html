@@ -37,7 +37,7 @@
         });
         var time = 3;
         var reload = function () {
-          if (WURFL.is_robot === true) return;
+          if (/bot|crawler|spider|crawling/i.test(navigator.userAgent)) return;
           if (time == 0) {
             if(WURFL.is_mobile === true) {
                 window.location.href = "/controller.html";
