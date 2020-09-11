@@ -479,3 +479,7 @@ table.layout-table {
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%)
 }
+.menu-button.punch-bg {
+  transform: translateY(5px);
+  -webkit-transform: translateY(5px);
+}
