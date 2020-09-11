@@ -11,5 +11,6 @@
   ],
   "name": "OpenConsole",
   "short_name": "OpenConsole",
-  "start_url": "/controller.html"
+  "start_url": "/controller.html",
+  "orientation": "landscape"
 }
