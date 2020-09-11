@@ -3,12 +3,12 @@
   <head>
     <title>OpenConsole Console</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description" content="OpenConsole is an online video game console. Open this page on a big screen as the console.">
     <link rel="shortcut icon" href="Resources/favicon.ico">
     <link rel="stylesheet" href="Resources/console_style.css">
     <link rel="manifest" href="A2HS/manifest-console.webmanifest">
-    <script type="text/javascript"> window.alert = function() {}; </script>
+    <script> window.alert = function() {}; </script>
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('service-worker.js');
