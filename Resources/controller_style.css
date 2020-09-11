@@ -79,8 +79,8 @@ body {
   margin: 0;
 }
 .namein #keyboard-div {
-  transform: translateY(-3.1em);
-  -webkit-transform: translateY(-3.1em);
+  transform: translateY(-3.2em);
+  -webkit-transform: translateY(-3.2em);
 }
 #keyboard-div {
   background-color: inherit;
