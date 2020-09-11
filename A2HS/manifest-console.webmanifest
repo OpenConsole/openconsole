@@ -1,5 +1,6 @@
 {
   "background_color": "#172836",
+  "theme_color": "#172836",
   "description": "Allows controlling HTML5 games from remote device.",
   "display": "fullscreen",
   "icons": [
