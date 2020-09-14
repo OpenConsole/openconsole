@@ -59,7 +59,7 @@ MetaController.prototype.initialize = function() {
 }
 MetaController.prototype.checkStandalone = function() {
   if (metaCtrl.isStandalone) return;
-  if (/(?<=\?).*mode=standalone(&|$)/m.test(window.location.href)) {
+  if (/\?.*mode=standalone(&|$)/m.test(window.location.href)) {
     // If running in app
     document.getElementById("help-button-text").innerHTML = "Enable AC";
     metaCtrl.isStandalone = true;
