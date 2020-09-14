@@ -18,6 +18,12 @@ body {
   background-color: #172836;
   font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
 }
+.screen {
+  position: absolute; left: 0; top: 0; right: 0; bottom: 0;
+}
+.rotation {
+  position: absolute; left: 50%; top: 50%;
+}
 
 .page {
   position: absolute;

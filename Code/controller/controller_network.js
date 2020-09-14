@@ -147,7 +147,7 @@ Network.prototype.connect = function (id) {
   var checksum = (idB2 + Math.floor(idB/10) + idB) % 10;
   if (checksum != 3 || idB2 == 0 || idA < 10)
     return 0;
-  var connId = getId(idA, idB);
+  var connId = utils.getId(idA, idB);
   playerNet.connectingFirstTime = true;
   playerNet.netConnect(connId);
   return 1;

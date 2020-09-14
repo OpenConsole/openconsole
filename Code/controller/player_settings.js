@@ -9,10 +9,10 @@ Player.prototype.chooseRandomName = function() {
 }
 
 Player.prototype.save = function() {
-  save_object("Player", player);
+  utils.save_object("Player", player);
 }
 Player.prototype.load = function() {
-  var oldPlayer = load_object("Player");
+  var oldPlayer = utils.load_object("Player");
   if (!oldPlayer) return;
   player.lastServer = oldPlayer.lastServer;
   player.name = oldPlayer.name;
@@ -22,7 +22,7 @@ Player.prototype.load = function() {
 Player.prototype.initialize = function() {
   player.load();
   player.chooseRandomName();
-  if (!player.nameSet) {
+  if (!player.nameSet || player.name == null) {
     player.name = player.defaultName;
   }
   if (player.lastServer != null) {

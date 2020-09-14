@@ -5,7 +5,7 @@ function MetaConsole() {
   this.internetImage = document.getElementById("internet-lost");
   this.gameTitle = document.getElementById("gameTitle");
   window.addEventListener('resize', this.updateGameSize);
-  document.getElementById("fullscreenButton").addEventListener("click", toggleFullscreen);
+  document.getElementById("fullscreenButton").addEventListener("click", utils.toggleFullscreen);
 }
 
 MetaConsole.prototype.displayServerInfo = function (a, b) {
@@ -27,10 +27,10 @@ MetaConsole.prototype.connectionDestroyed = function () {
   metaConsole.playersText.innerHTML = "";
 }
 MetaConsole.prototype.getHeaderHeight = function() {
-  return Math.max(Math.min(0.1*window.innerHeight, 60), 30);
+  return Math.max(Math.min(0.1*utils.screenRect.height, 60), 30);
 }
 MetaConsole.prototype.getHeaderTextSize = function() {
-  return Math.max(Math.min(0.08*window.innerHeight, 45.5), 24);
+  return Math.max(Math.min(0.08*utils.screenRect.height, 45.5), 24);
 }
 
 MetaConsole.prototype.displayPlayers = function (conns) {
@@ -48,7 +48,7 @@ MetaConsole.prototype.displayPlayers = function (conns) {
     var previousText = metaConsole.playersText.innerHTML;
     var newText = conn.metadata.name + " (" + (conn.id + 1) + "), ";
     metaConsole.playersText.innerHTML = previousText + newText;
-    var distToRight = window.innerWidth - metaConsole.playersText.getBoundingClientRect().right;
+    var distToRight = utils.screenRect.width - metaConsole.playersText.getBoundingClientRect().right;
     if(distToRight < 60) {
       // If already decreased font size, goto new line
       if(lines > newLines) {
@@ -74,7 +74,7 @@ MetaConsole.prototype.updateGameSize = function() {
   var gameContainer = gamesCtrl.getGameIFrame();
   if (gameContainer == null) return;
 
-  var myWidth = window.innerWidth, myHeight = window.innerHeight - metaConsole.getHeaderHeight();
+  var myWidth = utils.screenRect.width, myHeight = utils.screenRect.height - metaConsole.getHeaderHeight();
   var aspectRatio = gamesCtrl.getCurrGameAspect();
   if(aspectRatio && aspectRatio != 0) {
     var deltaAspect = (myWidth/myHeight) / parseFloat(aspectRatio);

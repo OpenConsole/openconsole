@@ -33,9 +33,9 @@ function MetaController() {
   
   this.isStandalone = false;
 
-  window.addEventListener('resize', this.checkOrentation);
-  window.addEventListener('orientationchange', this.checkOrentation);
-  window.addEventListener("focus", this.checkOrentation);
+  //window.addEventListener('resize', this.checkOrentation);
+  //window.addEventListener('orientationchange', this.checkOrentation);
+  //window.addEventListener("focus", this.checkOrentation);
   
   // Prevent most mobile annoyances
   window.addEventListener('touchmove', function (e) { e.preventDefault(); }, capture);
@@ -48,7 +48,7 @@ function MetaController() {
 }
 MetaController.prototype.initialize = function() {
   metaCtrl.setMode(modes.CONNECT);
-  metaCtrl.checkOrentation();
+  //metaCtrl.checkOrentation();
   var keyboards = document.getElementsByClassName("keyboard-key-label");
   for (var i = 0; i < keyboards.length; i++) {
     keyboards[i].addEventListener("touchstart", metaCtrl.handleKeyboard);
@@ -360,7 +360,7 @@ MetaController.prototype.handleButton = function (btn, input, evnt) {
       player.updateLastId(currId);
       metaCtrl.checkStandalone();
       // TODO
-      openFullscreen();
+      utils.openFullscreen();
     }
     return;
   }
@@ -399,7 +399,7 @@ MetaController.prototype.handleInGameButton = function (input) {
         playerNet.sendControlMessage({"command":"loadAcList"});
       }
       else {
-        toggleFullscreen();
+        utils.toggleFullscreen();
       }
       return 1;
     case 'null':

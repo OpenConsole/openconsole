@@ -34,7 +34,7 @@ Network.prototype.peerjsLoadError = function() {
  * peer object.
  */
 Network.prototype.loadPreviousAB = function() {
-  var prevAB = load_object('prevAB');
+  var prevAB = utils.load_object('prevAB');
   if (prevAB == null) return 0;
 
   consoleNet.a = prevAB.a;
@@ -47,7 +47,7 @@ Network.prototype.generateRandomAB = function() {
     consoleNet.b = b1 * 100 + b2 * 10 + b3;
 }
 Network.prototype.saveAB = function(a, b) {
-  save_object('prevAB', {"a":a, "b":b });
+  utils.save_object('prevAB', {"a":a, "b":b });
 }
 Network.prototype.initialize = function() {
   if(typeof Peer == "undefined") {
@@ -60,7 +60,7 @@ Network.prototype.initialize = function() {
   consoleNet.createPeer();
 }
 Network.prototype.createPeer = function() {
-  var myId = getId(consoleNet.a, consoleNet.b);
+  var myId = utils.getId(consoleNet.a, consoleNet.b);
   // Create own peer object with connection to shared PeerJS server
   consoleNet.peer = new Peer(myId, {
     host: 'peerjs-openconsole.herokuapp.com',
