@@ -113,7 +113,7 @@ Games.prototype.unityFrameLoaded = function () {
 
 Games.prototype.setGameFrame = function (gameObj) {
   gamesCtrl.currGame = gameObj;
-  document.getElementById("game").innerHTML = "<iframe id=\"webgl-content\" src=\"\" scrolling=\"no\" frameBorder=\"0\"></iframe>";
+  document.getElementById("game").innerHTML = "<iframe id=\"webgl-content\" src=\"\" allowfullscreen=\"\" scrolling=\"no\" noresize=\"noresize\" allow=\"autoplay; microphone; camera; vr\" gesture=\"media\" delegatestickyuseractivation=\"media\" frameborder=\"0\"></iframe>";
   gamesCtrl.gamesIFrame = document.getElementById("webgl-content");
   if(gamesCtrl.currGame.name != gamesCtrl.metaGame) {
     gamesCtrl.prevGame = gamesCtrl.currGame.name;
