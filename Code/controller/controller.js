@@ -165,6 +165,7 @@ MetaController.prototype.setPlayerNameInfo = function() {
 }
 
 MetaController.prototype.switchToNameIn = function() {
+  if (!metaCtrl.inCodeInMode) return;
   metaCtrl.connecttbody.classList.add("namein");
   var difference = -(metaCtrl.codebox.offsetTop - metaCtrl.namebox.offsetTop);
   metaCtrl.codebox.style.transform = "translateY(calc("+difference+"px + 0.25em))";
@@ -172,6 +173,7 @@ MetaController.prototype.switchToNameIn = function() {
   metaCtrl.inCodeInMode = false;
 }
 MetaController.prototype.switchToCodeIn = function() {
+  if (metaCtrl.inCodeInMode) return;
   metaCtrl.connecttbody.classList.remove("namein");
   metaCtrl.codebox.style.transform = "";
   metaCtrl.codebox.style.webkitTransform = "";
