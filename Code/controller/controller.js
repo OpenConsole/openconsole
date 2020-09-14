@@ -166,17 +166,9 @@ MetaController.prototype.setPlayerNameInfo = function() {
 
 MetaController.prototype.switchToNameIn = function() {
   metaCtrl.connecttbody.classList.add("namein");
-  var difference = -5;
-  var readjust = function () {
-    var newdifference = metaCtrl.codebox.getBoundingClientRect().top - metaCtrl.namebox.getBoundingClientRect().top;
-    if (newdifference > 0.5 || newdifference < -0.5) {
-      difference += newdifference;
-      metaCtrl.codebox.style.transform = "translateY(-"+difference+"px)";
-      metaCtrl.codebox.style.webkitTransform = "translateY(-"+difference+"px)";
-      setTimeout(readjust, 500);
-    }
-  }
-  readjust();
+  var difference = -(metaCtrl.codebox.offsetTop - metaCtrl.namebox.offsetTop);
+  metaCtrl.codebox.style.transform = "translateY(calc("+difference+"px + 0.25em))";
+  metaCtrl.codebox.style.webkitTransform = "translateY(calc("+difference+"px + 0.25em))";
   metaCtrl.inCodeInMode = false;
 }
 MetaController.prototype.switchToCodeIn = function() {
