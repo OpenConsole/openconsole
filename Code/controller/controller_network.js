@@ -13,7 +13,7 @@ function Network() {
 Network.prototype.initialize = function() {
   // Create own peer object with connection to shared PeerJS server
   playerNet.peer = new Peer(null, {
-    host: 'peerjs-openconsole.herokuapp.com',
+    host: '9000-peers-peerjsserver-crkpkltzhxh.ws-eu77.gitpod.io',
     secure: true,
     debug: 2
   });
