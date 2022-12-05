@@ -63,7 +63,7 @@ Network.prototype.createPeer = function() {
   var myId = utils.getId(consoleNet.a, consoleNet.b);
   // Create own peer object with connection to shared PeerJS server
   consoleNet.peer = new Peer(myId, {
-    host: 'peerjs-openconsole.herokuapp.com',
+    host: '9000-peers-peerjsserver-crkpkltzhxh.ws-eu77.gitpod.io',
     secure: true,
     debug: 2
   });
