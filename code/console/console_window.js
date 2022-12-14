@@ -9,8 +9,8 @@ function Games() {
   this.metaGame = "_ChooseGame"; // Website to Choose Game
   this.corsProxy = "https://cors-anywhere.herokuapp.com/";
   // this.corsProxy = "https://cors-proxy-oc.glitch.me/";
-  this.unityLoaderLoc = "https://openconsole-games.github.io/Games/_GenericUnityLoader/index.html";
-  this.genericLoaderLoc = "https://openconsole-games.github.io/Games/_GenericGameLoader/index.html";
+  this.unityLoaderLoc = "https://openconsole-games.github.io/games/_GenericUnityLoader/index.html";
+  this.genericLoaderLoc = "https://openconsole-games.github.io/games/_GenericGameLoader/index.html";
   this.currGame = null;
   this.gamesList = null;
   this.gamesIFrame = null;
@@ -213,13 +213,11 @@ Games.prototype.loadGamesList = function (jsonLocation, skipCorsProxy) {
 }
 Games.prototype.loadDefaultGamesList = function() {
   if(gamesCtrl.gamesList) return;
-  
-  //gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json', true);
-  gamesCtrl.loadGamesList('https://openconsole-games.github.io/Games/gamesList.json', true);
+  gamesCtrl.loadGamesList('https://openconsole-games.github.io/games/gamesList.json', true);
   setTimeout(gamesCtrl.loadDefaultGamesList, 5000);
 }
 Games.prototype.loadLocalGamesList = function() {
-  gamesCtrl.loadGamesList('http://localhost:8000/Games/gamesList.json', true);
+  gamesCtrl.loadGamesList('http://localhost:8000/games/gamesList.json', true);
 }
 Games.prototype.loadACGamesList = function() {
   // Used EXTERNALLY

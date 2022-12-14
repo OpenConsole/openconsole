@@ -506,7 +506,7 @@ GameCreator.prototype.setGameIFrame = function () {
       }
       break;
     case "remote":
-      loadLoc = "https://openconsole-games.github.io/Games/_GenericGameLoader/index.html";
+      loadLoc = "https://openconsole-games.github.io/games/_GenericGameLoader/index.html";
       var remoteGameLoc = currGameLoc;
       var messageToSend = {"type":"SetGame", "loc": remoteGameLoc, "canvasId": gCreator.currGameSettings.canvas.id };
       onLoadFunct = function (event) {
@@ -515,7 +515,7 @@ GameCreator.prototype.setGameIFrame = function () {
       }
       break;
     case "unity":
-      loadLoc = "https://openconsole-games.github.io/Games/_GenericUnityLoader/index.html";
+      loadLoc = "https://openconsole-games.github.io/games/_GenericUnityLoader/index.html";
       var remoteGameLoc = currGameLoc;
       var messageToSend = {"type":"SetUnityGame", "loc": remoteGameLoc, "corsProxy": gCreator.corsProxy };
       onLoadFunct = function (event) {
