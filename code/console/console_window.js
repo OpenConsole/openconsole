@@ -121,7 +121,7 @@ Games.prototype.setGameFrame = function (gameObj) {
   
   switch (gameObj.settings.game.type) {
     case "cached":
-      // !! Game HTML must be edited to contain: <script src="https://openconsole.github.io/Games/console_game_api.js"></script>
+      // !! Game HTML must be edited to contain: <script src="https://openconsole.github.io/openconsole/games/console_game_api.js"></script>
       gamesCtrl.gamesIFrame.src = gameObj.loc;
       gamesCtrl.gamesIFrame.addEventListener("load", gamesCtrl.cachedFrameLoaded );
       break;

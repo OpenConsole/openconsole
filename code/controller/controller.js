@@ -71,7 +71,7 @@ MetaController.prototype.preloadImages = function() {
   const requiredImages = ["code-x.png", "code-tick.png", "home-button.png", "controller/menu_change_game.png", "controller/menu_profile.png", "controller/menu_close.png", "controller/menu_leave.png", "controller/menu_help.png", "rotate-to-landscape.png"];
   for (i = 0; i < requiredImages.length; i++) {
     var preloadLink = document.createElement("link");
-    preloadLink.href = "Resources/" + requiredImages[i];
+    preloadLink.href = "resources/" + requiredImages[i];
     preloadLink.rel = "preload";
     preloadLink.as = "image";
     document.head.appendChild(preloadLink);

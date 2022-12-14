@@ -4,7 +4,7 @@
   "display": "fullscreen",
   "icons": [
     {
-      "src": "/A2HS/logo_l_192.png",
+      "src": "/openconsole/A2HS/logo_l_192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
@@ -12,6 +12,6 @@
   ],
   "name": "OpenConsole",
   "short_name": "OpenConsole",
-  "start_url": "/controller.html?mode=standalone",
+  "start_url": "/openconsole/controller.html?mode=standalone",
   "orientation": "landscape"
 }

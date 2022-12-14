@@ -185,17 +185,17 @@ GameCreator.prototype.chooseControllerType = function (type, event) {
   switch (type) {
     case "two_btn":
       gCreator.gameCtrlTwoBtn.classList.add("active");
-      gCreator.currGameSettings.ctrl.loc = "https://openconsole.github.io/Controllers/two_button/two_button.html";
+      gCreator.currGameSettings.ctrl.loc = "https://openconsole.github.io/openconsole/controllers/two_button/two_button.html";
       gCreator.setControllerIFrame();
       break;
     case "joystick":
       gCreator.gameCtrlJoystick.classList.add("active");
-      gCreator.currGameSettings.ctrl.loc = "https://openconsole.github.io/Controllers/one_joystick/one_joystick.html";
+      gCreator.currGameSettings.ctrl.loc = "https://openconsole.github.io/openconsole/controllers/one_joystick/one_joystick.html";
       gCreator.setControllerIFrame();
       break;
     case "multi_btn":
       gCreator.gameCtrlMultiBtn.classList.add("active");
-      // TODO: gCreator.currGameSettings.ctrl.loc = "https://openconsole.github.io/Controllers/";
+      // TODO: gCreator.currGameSettings.ctrl.loc = "https://openconsole.github.io/openconsole/controllers/";
       break;
     case "custom":
       gCreator.gameCtrlCustom.classList.add("active");
