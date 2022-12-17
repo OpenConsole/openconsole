@@ -1,8 +1,10 @@
+const NO_MESSAGE_TIMEOUT = 2000;
+
 function Network() {
   this.lastPeerId = null;
   this.peer = null;
   this.conns = new Array();
-  window.setInterval(this.checkTimeout, 2500);
+  window.setInterval(this.checkTimeout, 500);
   /**
    * Maybe can show more people on same line after resize
    */
@@ -130,7 +132,7 @@ Network.prototype.createPeer = function() {
  */
  Network.prototype.setupController = function (conn) {
   conn.on('open', function() {
-    conn.isActive = 6;
+    conn.lastMessage = new Date();
     conn.id = consoleNet.getMinimalId();
     consoleNet.conns.push(conn);
     
@@ -178,6 +180,7 @@ Network.prototype.getMinimalId = function (initialMinId) {
   return newId;
 }
 Network.prototype.handleMessage = function (conn, message) {
+  conn.lastMessage = new Date();
   switch (message.type) {
     case 'KeyPress':
       gamesCtrl.simulateButton(message.press.keyId, conn.id, message.press.upDown, message.press.pressId);
@@ -192,8 +195,10 @@ Network.prototype.handleMessage = function (conn, message) {
           conn.close();
       }
       break;
-    case 'Pong':
-      conn.isActive = 3;
+    case 'Ping':
+      if (message.sendPong) {
+        consoleNet.sendPong(conn);
+      }
       break;
     case 'Control':
       consoleNet.handleControlMessage(conn, message);
@@ -231,17 +236,13 @@ Network.prototype.resetPlayerIds = function () {
  * Check for dead connections
  */
 Network.prototype.connectionCheck = function (conn) {
-  if (conn.isActive == 0) {
+  if (new Date() - conn.lastMessage > NO_MESSAGE_TIMEOUT) {
     console.log("Timed out " + conn.peer);
     consoleNet.sendDisconnect(conn);
     setTimeout(function() { 
       if(conn && conn.open)
         conn.close();
     }, 500);
-  }
-  else {
-    consoleNet.sendPing(conn);
-    conn.isActive -= 1; 
   }
 }
 Network.prototype.checkTimeout = function() {
@@ -262,6 +263,10 @@ Network.prototype.signal = function (conn, message) {
 /**
  * All the possible messages we can send.
  */
+Network.prototype.sendPong = function(conn) {
+  var message = { "type": "Pong" };
+  consoleNet.signal(conn, JSON.stringify(message));
+}
 Network.prototype.setContollerGame = function (conn) {
   var ctrl = gamesCtrl.getControllerForCurrentGame(conn.id);
   if(!ctrl) return;
@@ -274,10 +279,6 @@ Network.prototype.setControllerLayout = function (conn) {
   if(!ctrl) return;
   
   var message = { "type":"SetControllerLayout", "keymap":ctrl.keymap };
-  consoleNet.signal(conn, JSON.stringify(message));
-}
-Network.prototype.sendPing = function (conn) {
-  var message = { "type":"Ping" };
   consoleNet.signal(conn, JSON.stringify(message));
 }
 Network.prototype.sendDisconnect = function (conn) {
@@ -294,7 +295,7 @@ Network.prototype.sendCustomMessage = function (message) {
   if (message.to != null) {
     var conn_to = consoleNet.conns.find(conn => conn.id == message.to);
     if (conn_to != null) {
-	    consoleNet.signal(conn_to, JSON.stringify(message));
+      consoleNet.signal(conn_to, JSON.stringify(message));
     }
   } else {
     consoleNet.conns.forEach(conn => consoleNet.signal(conn, JSON.stringify(message)));

@@ -16,7 +16,7 @@ SubController.prototype.setControllerLayout = function (keymap) {
   if (ctrlApi.controllerLoaded) {
     ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
   } else {
-    var setLayoutFunct = function (event) {
+    var setLayoutFunct = function () {
       ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
       ctrlApi.scIFrame.removeEventListener("load", setLayoutFunct);
     }
@@ -34,7 +34,7 @@ SubController.prototype.sendCustomMessage = function (message) {
   if (ctrlApi.controllerLoaded) {
     ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
   } else {
-    var setLayoutFunct = function (event) {
+    var setLayoutFunct = function () {
       ctrlApi.scIFrame.contentWindow.postMessage(messageToSend, "*");
       ctrlApi.scIFrame.removeEventListener("load", setLayoutFunct);
     }
@@ -46,7 +46,7 @@ SubController.prototype.sendMessage = function (event) {
   var message = event.data;
   switch(message.type) {
     case "Key":
-	    playerNet.sendKey(message.key);
+      playerNet.sendKey(message.key);
       break;
     case "Custom":
       playerNet.sendCustomMessage(message);

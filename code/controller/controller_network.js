@@ -1,3 +1,5 @@
+const NO_PONG_TIMEOUT = 2000;
+
 function Network() {
   this.lastPeerId = null;
   this.peer = null;
@@ -15,7 +17,7 @@ Network.prototype.initialize = function() {
   playerNet.peer = new Peer(null, {
     debug: 2
   });
-  playerNet.peer.on('open', function (id) {
+  playerNet.peer.on('open', function () {
     // Workaround for peer.reconnect deleting previous id
     if (playerNet.peer.id === null) {
       console.log('Received null id from peer open');
@@ -72,9 +74,22 @@ Network.prototype.signal = function (message) {
 /**
  * All the possible messages we can send.
  */
-Network.prototype.sendPong = function() {
-  var message = { "type":"Pong" };
+Network.prototype.sendPing = function(i) {
+  if (playerNet.conn === null || !playerNet.conn.open) return;
+  const sendPong = (i % (NO_PONG_TIMEOUT / 400)) === 0;
+  const expectPong = (i % (2 * NO_PONG_TIMEOUT / 100)) === 0;
+  const message = { "type": "Ping", "sendPong": sendPong };
+  if (expectPong) { playerNet.gotPong = false; }
   playerNet.signal(JSON.stringify(message));
+  if (expectPong) {
+    setTimeout(() => {
+      if (!playerNet.gotPong) {
+        console.log("Reconnecting because didn't get back pong!");
+        playerNet.closeConnection();
+      }
+    }, NO_PONG_TIMEOUT);
+  }
+  setTimeout(playerNet.sendPing.bind(this, (i + 1) % (NO_PONG_TIMEOUT/100 + 5)), 100);
 }
 Network.prototype.sendDisconnect = function() {
   var message = { "type":"Disconnect" };
@@ -110,7 +125,7 @@ Network.prototype.quitGame = function() {
  * Disconnect from console
  */
 Network.prototype.closeConnection = function() {
-  if (playerNet.conn && playerNet.conn.open) {
+  if (playerNet.conn) {
     playerNet.conn.close(); 
   }
 }
@@ -165,11 +180,12 @@ Network.prototype.netConnect = function (peerjsId) {
       playerNet.handleMessage(JSON.parse(data));
     });
     playerNet.conn.on('close', function () {
-      if (playerNet.conn.wantToDisconnect == null || playerNet.conn.wantToDisconnect) {
+      if (playerNet.conn.wantToDisconnect === null || playerNet.conn.wantToDisconnect) {
+        playerNet.conn = null;
         ctrlApi.setGame("");
         metaCtrl.enableConnect();
-        playerNet.conn = null;
       } else {
+        playerNet.conn = null;
         playerNet.connectingFirstTime = false;
         var reconnectToPeer = function() {
           if (!playerNet.peer.disconnected) {
@@ -182,6 +198,7 @@ Network.prototype.netConnect = function (peerjsId) {
         reconnectToPeer();
       }
     });
+    playerNet.sendPing(0);
   });
 }
     
@@ -190,8 +207,8 @@ Network.prototype.handleMessage = function (message) {
     case 'Disconnect':
       playerNet.closeConnection();
       break;
-    case 'Ping':
-      playerNet.sendPong();
+    case 'Pong':
+      playerNet.gotPong = true;
       break;
     case 'SetGame':
       playerNet.currentGame = message.name;

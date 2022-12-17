@@ -69,7 +69,7 @@ MetaController.prototype.checkStandalone = function() {
 MetaController.prototype.preloadImages = function() {
   // Unused as it doesn't work?
   const requiredImages = ["code-x.png", "code-tick.png", "home-button.png", "controller/menu_change_game.png", "controller/menu_profile.png", "controller/menu_close.png", "controller/menu_leave.png", "controller/menu_help.png", "rotate-to-landscape.png"];
-  for (i = 0; i < requiredImages.length; i++) {
+  for (let i = 0; i < requiredImages.length; i++) {
     var preloadLink = document.createElement("link");
     preloadLink.href = "resources/" + requiredImages[i];
     preloadLink.rel = "preload";
@@ -105,7 +105,7 @@ MetaController.prototype.setMode = function(mode) {
   }
 }
 
-MetaController.prototype.checkOrentation = function(mode) {
+MetaController.prototype.checkOrentation = function() {
   var width = window.innerWidth, height = window.innerHeight;
   if (width == null || height == null) {
     window.setTimeout(function() {
@@ -256,7 +256,7 @@ MetaController.prototype.setKeyboardLayout = function (layout) {
       break;
   }
 }
-MetaController.prototype.handleKeyboard = function (e) {
+MetaController.prototype.handleKeyboard = function () {
   var btn = this;
   var action = "";
   if (btn.classList.contains("keyboard-backspace")) {
@@ -300,7 +300,7 @@ MetaController.prototype.handleKeyboard = function (e) {
   else {
     switch (action) {
       case "Backspace":
-        var name = player.getRealName();
+        name = player.getRealName();
         if (name.length == 1 && !metaCtrl.shiftEnabled) {
           metaCtrl.shiftEnabled = true;
           metaCtrl.toggleCaps();

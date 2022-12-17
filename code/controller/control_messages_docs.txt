@@ -7,6 +7,7 @@ Every message has:
       .press.pressId	// Unique ID of this given press
     "SetGame":
       .name		// Name of game to set to
-    "Pong"		// Ack ping
+    "Ping"		  // Check for liveness
+      .sendPong // Expecting back a ping?
     "Disconnect"	// Signal disconnecting
     

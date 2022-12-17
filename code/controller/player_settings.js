@@ -33,7 +33,7 @@ Player.prototype.initialize = function() {
     metaCtrl.setText(playerNameInput, "&lrm;" + player.name + "&lrm;");
   }
   else {
-	  metaCtrl.setPlaceholder(playerNameInput, "e.g. " + player.name);
+    metaCtrl.setPlaceholder(playerNameInput, "e.g. " + player.name);
   }
 }
 
@@ -50,7 +50,7 @@ Player.prototype.updatePlayerName = function (newName) {
   if (newName == "") {
     player.nameSet = false;
     player.name = player.defaultName;
-	  metaCtrl.setPlaceholder(playerNameInput, "e.g. " + player.name);
+    metaCtrl.setPlaceholder(playerNameInput, "e.g. " + player.name);
   }
   else {
     if (/\s/.test(newName.charAt(0))) return; // First letter cannot be space

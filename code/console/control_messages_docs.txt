@@ -8,6 +8,6 @@ Every message has:
     "SetControllerLayout":
       .keymap[*keyId*] 		// check with if(message.keymap[*keyId*]), then enabled
       .keymap[*keyId*].text	// innerHtml of button
-    "Ping"		// Check for liveness
+    "Pong"		// Ack ping
     "Disconnect"	// Signal disconnecting
     
