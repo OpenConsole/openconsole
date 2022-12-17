@@ -126,7 +126,11 @@ Network.prototype.quitGame = function() {
  */
 Network.prototype.closeConnection = function() {
   if (playerNet.conn) {
-    playerNet.conn.close(); 
+    if (playerNet.conn.open) {
+      playerNet.conn.close();
+    } else {
+      playerNet.onClose();
+    }
   }
 }
 Network.prototype.disconnect = function() {
@@ -167,6 +171,7 @@ Network.prototype.connect = function (id) {
 }
 Network.prototype.netConnect = function (peerjsId) {
   // Create connection to destination peer specified in the input field
+  playerNet.peerjsId = peerjsId;
   playerNet.conn = playerNet.peer.connect(peerjsId, {
     reliable: true,
     metadata: player
@@ -180,26 +185,29 @@ Network.prototype.netConnect = function (peerjsId) {
       playerNet.handleMessage(JSON.parse(data));
     });
     playerNet.conn.on('close', function () {
-      if (playerNet.conn.wantToDisconnect === null || playerNet.conn.wantToDisconnect) {
-        playerNet.conn = null;
-        ctrlApi.setGame("");
-        metaCtrl.enableConnect();
-      } else {
-        playerNet.conn = null;
-        playerNet.connectingFirstTime = false;
-        var reconnectToPeer = function() {
-          if (!playerNet.peer.disconnected) {
-            playerNet.netConnect(peerjsId);
-          }
-          else {
-            setTimeout(reconnectToPeer, 500);
-          }
-        }
-        reconnectToPeer();
-      }
+      playerNet.onClose();
     });
     playerNet.sendPing(0);
   });
+}
+Network.prototype.onClose = function () {
+  if (playerNet.conn.wantToDisconnect === null || playerNet.conn.wantToDisconnect) {
+    playerNet.conn = null;
+    ctrlApi.setGame("");
+    metaCtrl.enableConnect();
+  } else {
+    playerNet.conn = null;
+    playerNet.connectingFirstTime = false;
+    var reconnectToPeer = function() {
+      if (!playerNet.peer.disconnected) {
+        playerNet.netConnect(playerNet.peerjsId);
+      }
+      else {
+        setTimeout(reconnectToPeer, 500);
+      }
+    }
+    reconnectToPeer();
+  }
 }
     
 Network.prototype.handleMessage = function (message) {

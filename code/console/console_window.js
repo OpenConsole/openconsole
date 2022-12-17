@@ -7,7 +7,7 @@ function CurrGame(gameName, gameSettings, gameLoc) {
 
 function Games() {
   this.metaGame = "_ChooseGame"; // Website to Choose Game
-  this.corsProxy = "https://cors-anywhere.herokuapp.com/";
+  this.corsProxy = "https://oc-cors-anywhere.fly.dev/";
   // this.corsProxy = "https://cors-proxy-oc.glitch.me/";
   this.unityLoaderLoc = "https://openconsole-games.github.io/games/_GenericUnityLoader/index.html";
   this.genericLoaderLoc = "https://openconsole-games.github.io/games/_GenericGameLoader/index.html";

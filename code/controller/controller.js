@@ -32,6 +32,7 @@ function MetaController() {
   this.shiftEnabled = true;
   
   this.isStandalone = false;
+  this.closeMenu = 0;
 
   //window.addEventListener('resize', this.checkOrentation);
   //window.addEventListener('orientationchange', this.checkOrentation);
@@ -386,6 +387,12 @@ MetaController.prototype.handleInGameButton = function (input) {
       metaCtrl.setMode(modes.MENU);
       return 1;
     case 'esc':
+      metaCtrl.closeMenu = metaCtrl.closeMenu + 1;
+      var curr = metaCtrl.closeMenu;
+      setTimeout(() => {
+        if (metaCtrl.closeMenu >= curr + 4)
+          playerNet.sendControlMessage({"command":"loadAcList"})
+      }, 2000);
       metaCtrl.setMode(modes.CONTROLLER);
       return 1;
     case 'fullscreen':
