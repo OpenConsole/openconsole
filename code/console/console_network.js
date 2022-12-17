@@ -1,4 +1,4 @@
-const NO_MESSAGE_TIMEOUT = 2000;
+const NO_MESSAGE_TIMEOUT = 4000;
 
 function Network() {
   this.lastPeerId = null;

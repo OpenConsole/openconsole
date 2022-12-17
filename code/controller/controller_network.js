@@ -1,4 +1,4 @@
-const NO_PONG_TIMEOUT = 2000;
+const NO_PONG_TIMEOUT = 4000;
 
 function Network() {
   this.lastPeerId = null;
@@ -89,7 +89,7 @@ Network.prototype.sendPing = function(i) {
       }
     }, NO_PONG_TIMEOUT);
   }
-  setTimeout(playerNet.sendPing.bind(this, (i + 1) % (NO_PONG_TIMEOUT/100 + 5)), 100);
+  setTimeout(playerNet.sendPing.bind(this, i + 1), 200);
 }
 Network.prototype.sendDisconnect = function() {
   var message = { "type":"Disconnect" };
